@@ -7,6 +7,7 @@ const LogIn = props => {
     const [long, longEnough] = useState(false);
     const [number, hasNumber] = useState(false);
     const [User, setUser] = useState({});
+    const [checkPassword, setCheckPass] = useState();
 
 
     const handleSubmit = async (data) => {
@@ -19,6 +20,10 @@ const LogIn = props => {
             }
         }
     };
+
+    const onCheckPassword = (checkPass) => {
+        setCheckPass(checkPass);
+    }
 
     return (
         <StyledWrapper>
@@ -33,7 +38,7 @@ const LogIn = props => {
             >
                 {({ errors, values, handleChange, handleSubmit, isSubmitting }) => (
                     <>
-                        <h1>Log-In</h1>
+                        <h1>SIGN UP</h1>
                         <form onSubmit={handleSubmit}>
                             <label htmlFor="username">Your user name</label>
                             <input
@@ -65,16 +70,57 @@ const LogIn = props => {
                             />
 
                             <label htmlFor="password">
-                                Your password
+                                Rewrite your password
                             </label>
                             <input
                                 id="password"
                                 type="password"
                                 name="password"
                                 onChange={handleChange}
-                                value={values.password}
+                                value={onCheckPassword}
                             />
-                            {/*<button type="submit" onClick={() => handleSubmit(User)}>LOG IN </button>*/}
+
+                            <label>
+                                Your gender:    
+                                <select style={{width: '100px', height: '30px', borderRadius: '10px', fontSize: '15px' , marginLeft: '20px'}} value={values.gender}>
+                                    <option value="Male">Male</option>
+                                    <option value="Female">Female</option>
+                                </select>
+                            </label>
+
+                            <label htmlFor="phone">
+                                Your phone number
+                            </label>
+                            <input
+                                id="phone"
+                                type="text"
+                                name="phone"
+                                onChange={handleChange}
+                                value={values.phone}
+                            />
+
+                            <label htmlFor="birthdate">
+                                Your date of birth
+                            </label>
+                            <input
+                                id="phone"
+                                type="date"
+                                name="phone"
+                                onChange={handleChange}
+                                value={values.date_of_birth}
+                            />
+
+                            <label htmlFor="working_place">
+                                Your working place
+                            </label>
+                            <input
+                                id="working_place"
+                                type="text"
+                                name="phone"
+                                onChange={handleChange}
+                                value={values.working_place}
+                            />
+                            
                             <button type="submit" disabled={isSubmitting}>Register</button>
                         </form>
                     </>
