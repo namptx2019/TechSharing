@@ -5,6 +5,7 @@
   "keywords": [],
   "main": "src/index.js",
   "dependencies": {
+    "axios": "^0.19.2",
     "formik": "1.5.8",
     "normalize.css": "8.0.1",
     "react": "16.8.6",
