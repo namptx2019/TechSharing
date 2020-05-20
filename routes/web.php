@@ -19,3 +19,6 @@ use Illuminate\Support\Facades\Route;
 
 Route::get('/', 'UsersController@index')->name('student_index');
 Route::post('/login', 'UsersController@auth')->name('user_login');
+Route::middleware('auth:api')->get('/me', function () {
+    dd(Auth::user());
+});

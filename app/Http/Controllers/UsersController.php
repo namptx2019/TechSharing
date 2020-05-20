@@ -75,7 +75,7 @@ class UsersController extends Controller
     public function store(UserCreateRequest $request)
     {
         try {
-
+            dd($request);
             $this->validator->with($request->all())->passesOrFail(ValidatorInterface::RULE_CREATE);
 
             $user = $this->repository->create($request->all());
@@ -224,15 +224,29 @@ class UsersController extends Controller
                 'password'  => $request->password,
             ]
         )) {
+            $user = $request->user();
+            $tokenResult = $user->createToken('Access Token');
+            $token = $tokenResult->token;
+            $token->save();
             if (request()->wantsJson()) {
                 return response()->json([
                     'message' => 'Success',
+                    'access_token' => $tokenResult->accessToken,
                 ]);
             }
         }
-        $errors = new MessageBag(['error' => 'Username or password are invalid or your account does not exist']);
         return response()->json([
             'message' => 'Username or password are invalid or your account does not exist',
-         ]);
+         ], 401);
+    }
+
+    /**
+     * Get the authenticated User
+     *
+     * @return [json] user object
+     */
+    public function me(Request $request)
+    {
+        return response()->json($request->user());
     }
 }

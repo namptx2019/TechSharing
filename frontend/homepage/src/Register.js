@@ -10,10 +10,10 @@ const LogIn = props => {
     const [checkPassword, setCheckPass] = useState();
 
 
-    const handleSubmit = async (data) => {
+    const handleSubmit = async () => {
         try {
-            const response = await UserService.register(data);
-            console.log(response.message);
+            const response = await UserService.register();
+            console.log(response);
         } catch(e) {
             if(e instanceof UserServiceError){
                 this.error = e.message;

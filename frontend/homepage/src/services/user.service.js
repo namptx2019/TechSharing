@@ -48,9 +48,9 @@ const UserService = {
      * @return { Object }
      */
     me: async function(){
+        ApiService.setHeader()
         try {
-            ApiService.setHeader();
-            const response = await ApiService.get(`/api/users/me`, axios.defaults.headers);
+            const response = await ApiService.post(`/api/user/me`);
             return response.data;
         } catch(e) {
             throw new UserServiceError(e.response.status, e.response.data.message);

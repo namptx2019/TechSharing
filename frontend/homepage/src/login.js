@@ -14,7 +14,7 @@ const LogIn = props => {
     const handleSubmit = async (data) => {
         try {
             const response = await UserService.login(data);
-            console.log(response.message);
+            localStorage.setItem('access_token', response.access_token)
             history.push("/main");
         } catch(e) {
             if(e instanceof UserServiceError){
