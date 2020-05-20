@@ -12,17 +12,15 @@ const LogIn = props => {
   const history = useHistory();
 
     const handleSubmit = async (data) => {
-        // try {
-        //     const response = await UserService.login(data);
-        //     console.log(response.message);
-        //     history.push("/main");
-        // } catch(e) {
-        //     if(e instanceof UserServiceError){
-        //         this.error = e.message;
-        //     }
-        // }
-
-        history.push("/main");
+        try {
+            const response = await UserService.login(data);
+            console.log(response.message);
+            history.push("/main");
+        } catch(e) {
+            if(e instanceof UserServiceError){
+                this.error = e.message;
+            }
+        }
     };
 
 
