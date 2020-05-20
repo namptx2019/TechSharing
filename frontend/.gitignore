@@ -1,0 +1,9 @@
+# Dependency directories
+node_modules/
+
+# Build folder
+build
+
+# Editor directories and files
+.idea
+
