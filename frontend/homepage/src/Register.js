@@ -8,7 +8,7 @@ const LogIn = props => {
     const [number, hasNumber] = useState(false);
     const [User, setUser] = useState({});
     const [checkPassword, setCheckPass] = useState();
-
+    let rePass = null;
 
     const handleSubmit = async (data) => {
         try {
@@ -23,6 +23,7 @@ const LogIn = props => {
 
     const onCheckPassword = (checkPass) => {
         setCheckPass(checkPass);
+        console.log(checkPass);
     }
 
     return (
@@ -33,7 +34,9 @@ const LogIn = props => {
                     setTimeout(() => {
                         handleSubmit(values);
                         setSubmitting(false);
+                        console.log(rePass);
                     }, 400);
+                    
                 }}
             >
                 {({ errors, values, handleChange, handleSubmit, isSubmitting }) => (
@@ -69,15 +72,15 @@ const LogIn = props => {
                                 value={values.password}
                             />
 
-                            <label htmlFor="password">
+                            <label htmlFor="reWritepassword">
                                 Rewrite your password
                             </label>
                             <input
-                                id="password"
+                                id="reWritepassword"
                                 type="password"
-                                name="password"
+                                name="reWritepassword"
                                 onChange={handleChange}
-                                value={onCheckPassword}
+                                value={rePass}
                             />
 
                             <label>
@@ -103,9 +106,9 @@ const LogIn = props => {
                                 Your date of birth
                             </label>
                             <input
-                                id="phone"
+                                id="birthdate"
                                 type="date"
-                                name="phone"
+                                name="birthdate"
                                 onChange={handleChange}
                                 value={values.date_of_birth}
                             />
@@ -116,7 +119,7 @@ const LogIn = props => {
                             <input
                                 id="working_place"
                                 type="text"
-                                name="phone"
+                                name="working_place"
                                 onChange={handleChange}
                                 value={values.working_place}
                             />
