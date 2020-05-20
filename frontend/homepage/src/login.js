@@ -1,16 +1,32 @@
 import React, { useState } from "react";
 import { Formik } from "formik";
-
+import UserService, { UserServiceError } from "../src/services/user.service"
 
 const LogIn = props => {
   const [long, longEnough] = useState(false);
   const [number, hasNumber] = useState(false);
+  const [User, setUser] = useState({});
+
+
+    const handleSubmit = async (data) => {
+        try {
+            const response = await UserService.login(data);
+            console.log(response.message);
+        } catch(e) {
+            if(e instanceof UserServiceError){
+                this.error = e.message;
+            }
+        }
+    };
 
   return (
     <Formik
       initialValues={{ email: "", password: "" }}
-      onSubmit={() => {
-        
+      onSubmit={(values, { setSubmitting }) => {
+          setTimeout(() => {
+              handleSubmit(values);
+              setSubmitting(false);
+          }, 400);
       }}
     >
       {({ errors, values, handleChange, handleSubmit, isSubmitting }) => (
@@ -37,7 +53,9 @@ const LogIn = props => {
               value={values.password}
             />
  
-            <button type="submit">LOG IN </button>
+            {/*<button type="submit" onClick={() => handleSubmit(User)}>LOG IN </button>*/}
+              <button type="submit" disabled={isSubmitting}>LOG IN </button>
+
             <button type="reset">SIGN UP </button>
             
           </form>

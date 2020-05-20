@@ -224,10 +224,15 @@ class UsersController extends Controller
                 'password'  => $request->password,
             ]
         )) {
-            return redirect()->route('dashboard.index');
+            if (request()->wantsJson()) {
+                return response()->json([
+                    'message' => 'Success',
+                ]);
+            }
         }
-
         $errors = new MessageBag(['error' => 'Username or password are invalid or your account does not exist']);
-        return redirect()->back()->withInput()->withErrors($errors);
+        return response()->json([
+            'message' => 'Username or password are invalid or your account does not exist',
+         ]);
     }
 }
