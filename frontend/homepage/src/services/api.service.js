@@ -7,7 +7,7 @@ const ApiService = {
 
     setHeader(){
         let token = localStorage.getItem('access_token');
-        axios.defaults.headers.access_token = `${token}`;
+        axios.defaults.headers.Authorization = `Bearer ${token}`;
     },
 
     get(endpoint, data = null){

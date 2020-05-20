@@ -1,12 +1,28 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Formik } from "formik";
 import UserService, { UserServiceError } from "../src/services/user.service"
 import StyledWrapper from "./Styles";
 import { Container, Row, Col } from 'reactstrap';
 
-const Main = ({user}) => {
+const Main = ({}) => {
 
-    const [User, setUser] = useState(user);
+    const [User, setUser] = useState({});
+
+    const fetchMe = async () => {
+        try {
+            const response = await UserService.me();
+            setUser(response.data);
+            console.log(response.data);
+        } catch(e) {
+            if(e instanceof UserServiceError){
+                // this.error = e.message;
+            }
+        }
+    };
+
+    useEffect(() => {
+        fetchMe();
+    }, [localStorage.getItem('access_token')]);
 
   return (
       <Container>

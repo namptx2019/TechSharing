@@ -75,9 +75,8 @@ class UsersController extends Controller
     public function store(UserCreateRequest $request)
     {
         try {
-            dd($request);
             $this->validator->with($request->all())->passesOrFail(ValidatorInterface::RULE_CREATE);
-
+            dd($request->all());
             $user = $this->repository->create($request->all());
 
             $response = [

@@ -21,6 +21,7 @@ use Illuminate\Support\Facades\Route;
 Route::group(['prefix' => 'user'], function () {
 //    Route::get('popular', 'SeriesController@getSeriesByLocale')->name('pubApi.series.popular');
     Route::post('auth', 'UsersController@auth')->name('api.user.login');
+    Route::post('register', 'UsersController@store')->name('api.user.register');
     Route::middleware('auth:api')->get('/me','UsersController@me')->name('api.currentuser.info');
 });
 

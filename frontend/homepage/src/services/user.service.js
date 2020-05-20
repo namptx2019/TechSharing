@@ -35,7 +35,15 @@ const UserService = {
      */
     register: async function(data){
         try {
-            const response = await ApiService.post('/api/user/store', data);
+            const requestData = {
+                method: 'post',
+                url: '/api/user/register',
+                data: {
+                    username: data.username,
+                    password: data.password,
+                }
+            }
+            const response = await ApiService.customRequest(requestData);
             return response.data;
         } catch(e) {
             throw new UserServiceError(e.response.status, e.response.data.message);
@@ -48,10 +56,10 @@ const UserService = {
      * @return { Object }
      */
     me: async function(){
-        ApiService.setHeader()
+        ApiService.setHeader();
         try {
-            const response = await ApiService.post(`/api/user/me`);
-            return response.data;
+            const response = await ApiService.get(`/api/user/me`);
+            return response;
         } catch(e) {
             throw new UserServiceError(e.response.status, e.response.data.message);
         }

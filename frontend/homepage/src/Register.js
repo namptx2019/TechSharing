@@ -8,7 +8,7 @@ const LogIn = props => {
     const [number, hasNumber] = useState(false);
     const [User, setUser] = useState({});
     const [checkPassword, setCheckPass] = useState();
-
+const rePass = null;
 
     const handleSubmit = async () => {
         try {
@@ -16,7 +16,7 @@ const LogIn = props => {
             console.log(response);
         } catch(e) {
             if(e instanceof UserServiceError){
-                this.error = e.message;
+                // this.error = e.message;
             }
         }
     };
@@ -68,17 +68,7 @@ const LogIn = props => {
                                 onChange={handleChange}
                                 value={values.password}
                             />
-
-                            <label htmlFor="password">
-                                Rewrite your password
-                            </label>
-                            <input
-                                id="password"
-                                type="password"
-                                name="password"
-                                onChange={handleChange}
-                                value={onCheckPassword}
-                            />
+                            
 
                             <label>
                                 Your gender:    
