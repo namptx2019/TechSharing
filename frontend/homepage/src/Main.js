@@ -14,8 +14,8 @@ const Main = ({user}) => {
           <h2>USER PROFILE</h2>
           <img src={require('./ava.jpg')} style={{borderRadius:'200px', width:'100px', height: '100px'}}/>
           <form>
-              <Row style={{flexWrap: 'wrap', alignItems: 'flex-start', flexDirection: 'row'}}>
-                <Col>
+              <div style={{flexWrap: 'wrap', alignItems: 'flex-start', flexDirection: 'row'}}>
+                <div>
                     <label htmlFor="username">Your user name</label>
                     <input
                         autoFocus
@@ -25,9 +25,9 @@ const Main = ({user}) => {
                         name="username"
                         value='Name'
                     />
-                </Col>
+                </div>
                     
-                <Col>
+                <div>
                     <label htmlFor="email">Your email account</label>
                     <input
                         id="email"
@@ -36,8 +36,8 @@ const Main = ({user}) => {
                         disabled
                         value='nam@abc'
                     />
-                </Col>
-              </Row>
+                </div>
+              </div>
                 
 
 
