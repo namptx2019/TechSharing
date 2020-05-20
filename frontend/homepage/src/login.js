@@ -1,17 +1,21 @@
 import React, { useState } from "react";
 import { Formik } from "formik";
 import UserService, { UserServiceError } from "../src/services/user.service"
+import StyledWrapper from "./Styles";
+import { useHistory } from "react-router-dom";
 
 const LogIn = props => {
   const [long, longEnough] = useState(false);
   const [number, hasNumber] = useState(false);
   const [User, setUser] = useState({});
 
+  const history = useHistory();
 
     const handleSubmit = async (data) => {
         try {
             const response = await UserService.login(data);
             console.log(response.message);
+            history.push("/main");
         } catch(e) {
             if(e instanceof UserServiceError){
                 this.error = e.message;
@@ -19,8 +23,10 @@ const LogIn = props => {
         }
     };
 
+
   return (
-    <Formik
+    <StyledWrapper>
+ <Formik
       initialValues={{ email: "", password: "" }}
       onSubmit={(values, { setSubmitting }) => {
           setTimeout(() => {
@@ -52,16 +58,16 @@ const LogIn = props => {
               onChange={handleChange}
               value={values.password}
             />
- 
-            {/*<button type="submit" onClick={() => handleSubmit(User)}>LOG IN </button>*/}
-              <button type="submit" disabled={isSubmitting}>LOG IN </button>
 
-            <button type="reset">SIGN UP </button>
+
+            <button type="submit">LOG IN </button>
             
           </form>
         </>
       )}
     </Formik>
+    </StyledWrapper>
+   
   );
 };
 
