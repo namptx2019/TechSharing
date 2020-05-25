@@ -14,7 +14,7 @@ class AddAvatarForUserTable extends Migration
   public function up()
   {
     Schema::table('users', function (Blueprint $table) {
-      $table->text('avatar')->nullable()->change();
+      $table->text('avatar');
     });
   }
 
