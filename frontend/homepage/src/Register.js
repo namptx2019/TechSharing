@@ -8,21 +8,22 @@ const LogIn = props => {
     const [number, hasNumber] = useState(false);
     const [User, setUser] = useState({});
     const [checkPassword, setCheckPass] = useState();
-const rePass = null;
+    let rePass = null;
 
-    const handleSubmit = async () => {
+    const handleSubmit = async (data) => {
         try {
-            const response = await UserService.register();
-            console.log(response);
+            const response = await UserService.register(data);
+            console.log(response.message);
         } catch(e) {
             if(e instanceof UserServiceError){
-                // this.error = e.message;
+                this.error = e.message;
             }
         }
     };
 
     const onCheckPassword = (checkPass) => {
         setCheckPass(checkPass);
+        console.log(checkPass);
     }
 
     return (
@@ -33,7 +34,9 @@ const rePass = null;
                     setTimeout(() => {
                         handleSubmit(values);
                         setSubmitting(false);
+                        console.log(rePass);
                     }, 400);
+                    
                 }}
             >
                 {({ errors, values, handleChange, handleSubmit, isSubmitting }) => (
@@ -68,7 +71,17 @@ const rePass = null;
                                 onChange={handleChange}
                                 value={values.password}
                             />
-                            
+
+                            <label htmlFor="reWritepassword">
+                                Rewrite your password
+                            </label>
+                            <input
+                                id="reWritepassword"
+                                type="password"
+                                name="reWritepassword"
+                                onChange={handleChange}
+                                value={rePass}
+                            />
 
                             <label>
                                 Your gender:    
@@ -93,9 +106,9 @@ const rePass = null;
                                 Your date of birth
                             </label>
                             <input
-                                id="phone"
+                                id="birthdate"
                                 type="date"
-                                name="phone"
+                                name="birthdate"
                                 onChange={handleChange}
                                 value={values.date_of_birth}
                             />
@@ -106,7 +119,7 @@ const rePass = null;
                             <input
                                 id="working_place"
                                 type="text"
-                                name="phone"
+                                name="working_place"
                                 onChange={handleChange}
                                 value={values.working_place}
                             />
