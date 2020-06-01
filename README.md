@@ -15,13 +15,15 @@ Run server by command. Local server will be running on `http://localhost:8000`
 ```
 php artisan serve
 ```
-
+```
+php artisan passport:install
+```
 ## Config environment
 Edit `.env` 
 ```
 ...
 # URL of client
-APP_CLIENT=http://localhost:8080
+APP_CLIENT=http://localhost:3000
 ...
 # Database
 DB_CONNECTION=mysql

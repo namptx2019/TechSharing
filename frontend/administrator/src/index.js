@@ -1,37 +1,18 @@
+import 'react-app-polyfill/ie9'; // For IE 9-11 support
+import 'react-app-polyfill/stable';
+// import 'react-app-polyfill/ie11'; // For IE 11 support
+import './polyfill'
 import React from 'react';
 import ReactDOM from 'react-dom';
-// import registerServiceWorker from './registerServiceWorker';
-import { unregister } from './registerServiceWorker';
+import './index.css';
+import App from './App';
+import * as serviceWorker from './serviceWorker';
+import ApiService from './services/api.service'
+ApiService.init(process.env.REACT_APP_API_URL)
 
-import { HashRouter } from 'react-router-dom';
-import './assets/base.css';
-import Main from './DemoPages/Main';
-import configureStore from './config/configureStore';
-import { Provider } from 'react-redux';
+ReactDOM.render(<App />, document.getElementById('root'));
 
-const store = configureStore();
-const rootElement = document.getElementById('root');
-
-const renderApp = Component => {
-  ReactDOM.render(
-    <Provider store={store}>
-      <HashRouter>
-        <Component />
-      </HashRouter>
-    </Provider>,
-    rootElement
-  );
-};
-
-renderApp(Main);
-
-if (module.hot) {
-  module.hot.accept('./DemoPages/Main', () => {
-    const NextApp = require('./DemoPages/Main').default;
-    renderApp(NextApp);
-  });
-}
-unregister();
-
-// registerServiceWorker();
-
+// If you want your app to work offline and load faster, you can change
+// unregister() to register() below. Note this comes with some pitfalls.
+// Learn more about service workers: http://bit.ly/CRA-PWA
+serviceWorker.unregister();
