@@ -11,6 +11,7 @@ use App\Http\Requests\RoleCreateRequest;
 use App\Http\Requests\RoleUpdateRequest;
 use App\Repositories\RoleRepository;
 use App\Validators\RoleValidator;
+use App\Entities\Role;
 
 /**
  * Class RolesController.
@@ -99,6 +100,8 @@ class RolesController extends Controller
 
             return redirect()->back()->withErrors($e->getMessageBag())->withInput();
         }
+
+        return $this->repository->create($request->all());
     }
 
     /**
@@ -189,16 +192,19 @@ class RolesController extends Controller
      */
     public function destroy($id)
     {
-        $deleted = $this->repository->delete($id);
-
-        if (request()->wantsJson()) {
-
+        $role = $this->repository->withCount('users')->withCount('hasUsers')->find($id);
+        if ($role->has_users_count > 0 || $role->users_count > 0) {
+            return response()->json([
+                'error' => true,
+                'message' => 'This role has user.',
+            ], 403);
+        } else {
+            $role->delete();
             return response()->json([
                 'message' => 'Role deleted.',
-                'deleted' => $deleted,
             ]);
         }
-
-        return redirect()->back()->with('message', 'Role deleted.');
     }
+
+
 }

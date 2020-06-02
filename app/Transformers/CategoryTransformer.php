@@ -22,12 +22,22 @@ class CategoryTransformer extends TransformerAbstract
     public function transform(Category $model)
     {
         return [
-            'id'         => (int) $model->id,
+            'id'            => (int) $model->id,
+            'name'          => $model->name,
+            'text'          => $model->name,
+            'thumbnail'     => $model->thumbnail,
+            'slug'          => $model->slug,
+            'status'        => $model->status,
+            'header'        => $model->header,
+            'created_by'    => $model->author,
+            'updated_by'    => $model->lastUpdateBy,
+            'childrens'     => $model->getChildrens,
+            'parent_id'     => $model->parent_id,
+            'created_at'    => $model->created_at,
+            'updated_at'    => $model->updated_at,
 
-            /* place your other model properties here */
-
-            'created_at' => $model->created_at,
-            'updated_at' => $model->updated_at
+            //full path of category thumbnail
+            'full_path'      => $model->full_path,
         ];
     }
 }

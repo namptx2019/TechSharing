@@ -11,6 +11,8 @@ use App\Http\Requests\CommentCreateRequest;
 use App\Http\Requests\CommentUpdateRequest;
 use App\Repositories\CommentRepository;
 use App\Validators\CommentValidator;
+use App\Entities\Post;
+use App\Events\Scoring;
 
 /**
  * Class CommentsController.
@@ -70,18 +72,21 @@ class CommentsController extends Controller
      *
      * @throws \Prettus\Validator\Exceptions\ValidatorException
      */
-    public function store(CommentCreateRequest $request)
+    public function store(CommentCreateRequest $request, Post $postSlug = NULL)
     {
         try {
 
             $this->validator->with($request->all())->passesOrFail(ValidatorInterface::RULE_CREATE);
 
-            $comment = $this->repository->create($request->all());
+            $comment = $this->repository->create($request, $postSlug);
 
             $response = [
                 'message' => 'Comment created.',
                 'data'    => $comment->toArray(),
             ];
+
+            // Emit event to increase score for user
+            event(new Scoring($request->user(), config('settings.SCORE_COMMENT_CREATE'), 'create', $comment));
 
             if ($request->wantsJson()) {
 
@@ -122,6 +127,18 @@ class CommentsController extends Controller
         return view('comments.show', compact('comment'));
     }
 
+    public function getComment(Post $postSlug)
+    {
+        $comments = $this->repository->with('author')->orderBy('id', 'desc')->findWhere([
+            'post_id' => $postSlug->id,
+        ]);
+        if (request()->wantsJson()) {
+            return response()->json(
+                $comments
+            );
+        }
+    }
+
     /**
      * Show the form for editing the specified resource.
      *
@@ -152,7 +169,12 @@ class CommentsController extends Controller
 
             $this->validator->with($request->all())->passesOrFail(ValidatorInterface::RULE_UPDATE);
 
-            $comment = $this->repository->update($request->all(), $id);
+            //Restrict field update
+            $data =  array(
+                'content' => $request->content
+            );
+
+            $comment = $this->repository->update($data, $id);
 
             $response = [
                 'message' => 'Comment updated.',

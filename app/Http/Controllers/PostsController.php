@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Repositories\UserRepository;
 use Illuminate\Http\Request;
 
 use App\Http\Requests;
@@ -11,6 +12,8 @@ use App\Http\Requests\PostCreateRequest;
 use App\Http\Requests\PostUpdateRequest;
 use App\Repositories\PostRepository;
 use App\Validators\PostValidator;
+use App\Presenters\PostPresenter;
+use App\Events\Scoring;
 
 /**
  * Class PostsController.
@@ -23,7 +26,7 @@ class PostsController extends Controller
      * @var PostRepository
      */
     protected $repository;
-
+    protected $Userrepository;
     /**
      * @var PostValidator
      */
@@ -35,10 +38,11 @@ class PostsController extends Controller
      * @param PostRepository $repository
      * @param PostValidator $validator
      */
-    public function __construct(PostRepository $repository, PostValidator $validator)
+    public function __construct(PostRepository $repository, PostValidator $validator, UserRepository $Userrepository)
     {
         $this->repository = $repository;
         $this->validator  = $validator;
+        $this->repositoryUser = $Userrepository;
     }
 
     /**
@@ -48,17 +52,25 @@ class PostsController extends Controller
      */
     public function index()
     {
+        $this->repository->setPresenter(PostPresenter::class);
         $this->repository->pushCriteria(app('Prettus\Repository\Criteria\RequestCriteria'));
-        $posts = $this->repository->all();
+        $posts = $this->repository;
+        if (request()->input('filter') != null) {
+            $posts = $posts->with(['categoryName'])->skipPresenter();
+        }
+        $posts = $posts->scopeQuery(function($query){
+            return $query->orderBy('id','desc');
+        })->all();
 
         if (request()->wantsJson()) {
-
-            return response()->json([
-                'data' => $posts,
-            ]);
+            if (!empty($posts['data'])) {
+                return response()->json($posts);
+            } else {
+                return response()->json(['data' => $posts]);
+            }
         }
 
-        return view('posts.index', compact('posts'));
+        return response()->json($posts);
     }
 
     /**
@@ -76,12 +88,15 @@ class PostsController extends Controller
 
             $this->validator->with($request->all())->passesOrFail(ValidatorInterface::RULE_CREATE);
 
-            $post = $this->repository->create($request->all());
+            $post = $this->repository->create($request);
 
             $response = [
                 'message' => 'Post created.',
                 'data'    => $post->toArray(),
             ];
+
+            // Emit event to increase score for user
+            event(new Scoring($request->user(), config('settings.SCORE_POST_CREATE'), 'create', $post));
 
             if ($request->wantsJson()) {
 
@@ -110,13 +125,33 @@ class PostsController extends Controller
      */
     public function show($id)
     {
+        $this->repository->setPresenter(PostPresenter::class);
         $post = $this->repository->find($id);
 
         if (request()->wantsJson()) {
 
-            return response()->json([
-                'data' => $post,
-            ]);
+            return response()->json($post);
+        }
+
+        return view('posts.show', compact('post'));
+    }
+
+    /**
+     * Display the specified resource.
+     *
+     * @param  string $slug
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function getDetailsSlug($slug)
+    {
+        $this->repository->setPresenter(PostPresenter::class);
+        $post = $this->repository->findByField('slug', $slug);
+
+        if (request()->wantsJson()) {
+            return response()->json(
+                $post
+            );
         }
 
         return view('posts.show', compact('post'));
@@ -152,7 +187,7 @@ class PostsController extends Controller
 
             $this->validator->with($request->all())->passesOrFail(ValidatorInterface::RULE_UPDATE);
 
-            $post = $this->repository->update($request->all(), $id);
+            $post = $this->repository->update($request, $id);
 
             $response = [
                 'message' => 'Post updated.',
@@ -200,5 +235,51 @@ class PostsController extends Controller
         }
 
         return redirect()->back()->with('message', 'Post deleted.');
+    }
+
+    /**
+     * Get all series has been belongs to
+     *
+     * @param int $id
+     *
+     * @return \Illuminate\Http\Response
+     *
+     * @throws \Prettus\Validator\Exceptions\ValidatorException
+     */
+    public function getSeries($id)
+    {
+        $post = $this->repository->find($id);
+
+        if (request()->wantsJson()) {
+
+            return response()->json([
+                'data' => $post->series,
+            ]);
+        }
+
+        return view('series.show', compact('series'));
+    }
+
+    /**
+     * Display a listing of the resource with pagination for public api
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function paginate()
+    {
+        // Using transfomer for entities
+        $this->repository->setPresenter(PostPresenter::class);
+
+        // Set Criteria
+        $this->repository->pushCriteria(app('Prettus\Repository\Criteria\RequestCriteria'));
+
+        $posts = $this->repository->scopeQuery(function($query){
+            return $query->orderBy('id','desc');
+        })->paginate(12);
+
+        if (request()->wantsJson()) {
+
+            return response()->json($posts);
+        }
     }
 }

@@ -20,7 +20,6 @@ class CreateSeriesTable extends Migration
       $table->text('poster');
       $table->text('slug')->nullable();
       $table->unsignedInteger('category_id');
-      $table->unsignedInteger('language_id')->default(0);
       $table->unsignedInteger('viewed')->default(0);
       $table->unsignedInteger('status')->default(0);
       $table->unsignedInteger('created_by');

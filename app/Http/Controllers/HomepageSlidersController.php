@@ -42,20 +42,42 @@ class HomepageSlidersController extends Controller
     }
 
     /**
-     * Display a listing of the resource.
+     * Display a listing of the resource. (Homepage Slider with status = 1)
      *
      * @return \Illuminate\Http\Response
      */
     public function index()
     {
+        $this->repository->setPresenter('App\Presenters\HomepageSliderPresenter');
         $this->repository->pushCriteria(app('Prettus\Repository\Criteria\RequestCriteria'));
-        $homepageSliders = $this->repository->all();
+        $homepageSliders = $this->repository->orderBy('weight', 'asc')
+            ->orderBy('updated_at','desc')
+            ->findByField('status', 1);
 
         if (request()->wantsJson()) {
 
-            return response()->json([
-                'data' => $homepageSliders,
-            ]);
+            return response()->json($homepageSliders);
+        }
+
+        return view('homepageSliders.index', compact('homepageSliders'));
+    }
+
+    /**
+     * Display a listing of the resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function getAll()
+    {
+        $this->repository->setPresenter('App\Presenters\HomepageSliderPresenter');
+        $this->repository->pushCriteria(app('Prettus\Repository\Criteria\RequestCriteria'));
+        $homepageSliders = $this->repository->orderBy('status','desc')
+            ->orderBy('weight', 'asc')
+            ->orderBy('updated_at','desc')->all();
+
+        if (request()->wantsJson()) {
+
+            return response()->json($homepageSliders);
         }
 
         return view('homepageSliders.index', compact('homepageSliders'));
@@ -73,14 +95,23 @@ class HomepageSlidersController extends Controller
     public function store(HomepageSliderCreateRequest $request)
     {
         try {
-
+            $this->repository->setPresenter('App\Presenters\HomepageSliderPresenter');
             $this->validator->with($request->all())->passesOrFail(ValidatorInterface::RULE_CREATE);
 
-            $homepageSlider = $this->repository->create($request->all());
+            $data = $request->all();
+            if ($data['link'] == NULL){
+                $data['link'] = '#';
+            }
+            $data['created_by'] = $request->user()->id;
+            $data['updated_by'] = $request->user()->id;
+            $this->repository->updateWeights($data['weight']);
+            $data['thumbnail'] = $this->repository->upload($request->file('image'));
+
+            $homepageSlider = $this->repository->create($data);
 
             $response = [
                 'message' => 'HomepageSlider created.',
-                'data'    => $homepageSlider->toArray(),
+                'data'    => $homepageSlider,
             ];
 
             if ($request->wantsJson()) {
@@ -110,13 +141,12 @@ class HomepageSlidersController extends Controller
      */
     public function show($id)
     {
+        $this->repository->setPresenter('App\Presenters\HomepageSliderPresenter');
         $homepageSlider = $this->repository->find($id);
 
         if (request()->wantsJson()) {
 
-            return response()->json([
-                'data' => $homepageSlider,
-            ]);
+            return response()->json($homepageSlider);
         }
 
         return view('homepageSliders.show', compact('homepageSlider'));
@@ -149,14 +179,21 @@ class HomepageSlidersController extends Controller
     public function update(HomepageSliderUpdateRequest $request, $id)
     {
         try {
-
             $this->validator->with($request->all())->passesOrFail(ValidatorInterface::RULE_UPDATE);
+            $this->repository->updateWeights($request->all()['weight'], $id);
 
-            $homepageSlider = $this->repository->update($request->all(), $id);
+            if($request->file('image') !== NULL){
+                $homepageSlider = $this->repository->updateWithUpload($request, $id);
+            } else {
+                $this->repository->setPresenter('App\Presenters\HomepageSliderPresenter');
+                $data = $request->all();
+                $data['updated_by'] = $request->user()->id;
+                $homepageSlider = $this->repository->update($request->all(), $id);
+            }
 
             $response = [
                 'message' => 'HomepageSlider updated.',
-                'data'    => $homepageSlider->toArray(),
+                'data'    => $homepageSlider,
             ];
 
             if ($request->wantsJson()) {

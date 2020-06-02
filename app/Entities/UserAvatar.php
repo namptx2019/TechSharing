@@ -15,11 +15,27 @@ class UserAvatar extends Model implements Transformable
 {
     use TransformableTrait;
 
+    protected $table = 'user_ava';
+
     /**
      * The attributes that are mass assignable.
      *
      * @var array
      */
-    protected $fillable = [];
+    protected $fillable = [
+        'user_id',
+        'link',
+        'status'
+    ];
 
+    protected $hidden = [
+        'user_id'
+    ];
+
+    protected $appends = ['full_path'];
+
+    public function getFullPathAttribute()
+    {
+        return asset('storage/uploads/'.$this->link);
+    }
 }
