@@ -18,7 +18,9 @@ class CommentValidator extends LaravelValidator
      * @var array
      */
     protected $rules = [
-        ValidatorInterface::RULE_CREATE => [],
+        ValidatorInterface::RULE_CREATE => [
+            'content' => 'required',
+        ],
         ValidatorInterface::RULE_UPDATE => [],
     ];
 }

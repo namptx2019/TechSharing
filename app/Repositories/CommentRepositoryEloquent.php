@@ -15,6 +15,10 @@ use App\Validators\CommentValidator;
  */
 class CommentRepositoryEloquent extends BaseRepository implements CommentRepository
 {
+    protected $fieldSearchable = [
+        'user_id',
+        'post_id'
+    ];
     /**
      * Specify Model class name
      *
@@ -26,10 +30,10 @@ class CommentRepositoryEloquent extends BaseRepository implements CommentReposit
     }
 
     /**
-    * Specify Validator class name
-    *
-    * @return mixed
-    */
+     * Specify Validator class name
+     *
+     * @return mixed
+     */
     public function validator()
     {
 
@@ -44,5 +48,18 @@ class CommentRepositoryEloquent extends BaseRepository implements CommentReposit
     {
         $this->pushCriteria(app(RequestCriteria::class));
     }
-    
+
+    public function create($request, $postSlug = NULL)
+    {
+        $author = $request->user();
+        $data = $request->all();
+
+        if($postSlug !== NULL){
+            $data['post_id'] = $postSlug->id;
+        }
+
+        $data['user_id'] = (int)$author->id;
+
+        return Comment::create($data);
+    }
 }

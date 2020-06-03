@@ -26,10 +26,10 @@ class RoleRepositoryEloquent extends BaseRepository implements RoleRepository
     }
 
     /**
-    * Specify Validator class name
-    *
-    * @return mixed
-    */
+     * Specify Validator class name
+     *
+     * @return mixed
+     */
     public function validator()
     {
 
@@ -44,5 +44,17 @@ class RoleRepositoryEloquent extends BaseRepository implements RoleRepository
     {
         $this->pushCriteria(app(RequestCriteria::class));
     }
-    
+
+    public function create($request)
+    {
+        $role = new Role;
+        $role->name = $request['name'];
+
+        if($role->save()){
+            return $role;
+        }
+        else{
+            return NULL;
+        };
+    }
 }

@@ -19,7 +19,7 @@
         </div>
     </section>
 @endif
-
+@dd($users);
 @if($errors->any())
     <section id="errors">
         <div class="container">

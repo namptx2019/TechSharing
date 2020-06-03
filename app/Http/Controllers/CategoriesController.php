@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Presenters\CategoryPresenter;
 use Illuminate\Http\Request;
 
 use App\Http\Requests;
@@ -39,6 +40,7 @@ class CategoriesController extends Controller
     {
         $this->repository = $repository;
         $this->validator  = $validator;
+        $this->repository->setPresenter("App\\Presenters\\CategoryPresenter");
     }
 
     /**
@@ -46,16 +48,13 @@ class CategoriesController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
         $this->repository->pushCriteria(app('Prettus\Repository\Criteria\RequestCriteria'));
-        $categories = $this->repository->all();
-
+        $categories = $this->repository->findWhere(['status' => 1]);
         if (request()->wantsJson()) {
 
-            return response()->json([
-                'data' => $categories,
-            ]);
+            return response()->json($categories);
         }
 
         return view('categories.index', compact('categories'));
@@ -76,7 +75,7 @@ class CategoriesController extends Controller
 
             $this->validator->with($request->all())->passesOrFail(ValidatorInterface::RULE_CREATE);
 
-            $category = $this->repository->create($request->all());
+            $category = $this->repository->create($request);
 
             $response = [
                 'message' => 'Category created.',
@@ -114,9 +113,7 @@ class CategoriesController extends Controller
 
         if (request()->wantsJson()) {
 
-            return response()->json([
-                'data' => $category,
-            ]);
+            return response()->json($category);
         }
 
         return view('categories.show', compact('category'));
@@ -152,7 +149,7 @@ class CategoriesController extends Controller
 
             $this->validator->with($request->all())->passesOrFail(ValidatorInterface::RULE_UPDATE);
 
-            $category = $this->repository->update($request->all(), $id);
+            $category = $this->repository->update($request, $id);
 
             $response = [
                 'message' => 'Category updated.',
@@ -200,5 +197,86 @@ class CategoriesController extends Controller
         }
 
         return redirect()->back()->with('message', 'Category deleted.');
+    }
+
+    /**
+     * Display the specified resource.
+     *
+     * @param  int $id
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function getDetailsSlug($slug)
+    {
+        $category = $this->repository->skipPresenter()->findByField('slug', $slug)->first();
+        $category->hasSeries;
+        $category->hasPosts;
+        $category->hasContest;
+
+        if (request()->wantsJson()) {
+
+            return response()->json($category);
+        }
+
+        return response();
+    }
+
+    /**
+     * Handle request for hierarchy all categories
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function hierarchy()
+    {
+        $categories = $this->repository->hierarchy();
+
+        if(request()->wantsJson()){
+            return response()->json(['data' => $categories]);
+        }
+
+        return response();
+    }
+
+    /**
+     * Handle request for hierarchy only header categories
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function headerHierarchy()
+    {
+        $categories = $this->repository->headerHierarchy();
+
+        if(request()->wantsJson()){
+            return response()->json(['data' => $categories]);
+        }
+
+        return response();
+    }
+
+    /**
+     * Handle request for get popular categories
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function popularList()
+    {
+        $categories = $this->repository ->skipPresenter()
+            ->hidden(['created_by', 'updated_by'])
+            ->withCount('hasPosts')
+            ->withCount('hasContest')
+            ->withCount('hasSeries')
+            ->orderBy('has_posts_count', 'DESC')
+            ->orderBy('has_contest_count', 'DESC')
+            ->orderBy('has_series_count', 'DESC')
+            ->scopeQuery(function ($query) {
+                return $query
+                    ->where('status', 1);
+            })
+            ->paginate(6);
+        if(request()->wantsJson()){
+            return response()->json($categories);
+        }
+
+        return response();
     }
 }

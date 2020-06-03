@@ -23,6 +23,8 @@ class RoleTransformer extends TransformerAbstract
     {
         return [
             'id'         => (int) $model->id,
+            'text'       => $model->name,
+            'name'       => $model->name,
 
             /* place your other model properties here */
 

@@ -20,10 +20,8 @@ $factory->define(App\Entities\Series::class, function (Faker $faker) {
     'poster'      => $faker->url,
     'slug'        => $faker->slug,
     'category_id' => rand(0, 4),
-    'language_id' => rand(0, 4),
     'viewed'      => rand(100, 400),
     'status'      => rand(0, 1),
-    'created_by'  => $faker->dateTime,
     'created_by'  => 12,
     'updated_by'  => 23
   ];

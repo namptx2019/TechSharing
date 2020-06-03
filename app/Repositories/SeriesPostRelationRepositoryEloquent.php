@@ -25,16 +25,6 @@ class SeriesPostRelationRepositoryEloquent extends BaseRepository implements Ser
         return SeriesPostRelation::class;
     }
 
-    /**
-    * Specify Validator class name
-    *
-    * @return mixed
-    */
-    public function validator()
-    {
-
-        return SeriesPostRelationValidator::class;
-    }
 
 
     /**
@@ -44,5 +34,5 @@ class SeriesPostRelationRepositoryEloquent extends BaseRepository implements Ser
     {
         $this->pushCriteria(app(RequestCriteria::class));
     }
-    
+
 }

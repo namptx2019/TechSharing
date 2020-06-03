@@ -46,6 +46,8 @@ class RouteServiceProvider extends ServiceProvider
 
         $this->mapWebRoutes();
 
+        $this->mapPublicApiRoutes();
+
         //
     }
 
@@ -76,5 +78,18 @@ class RouteServiceProvider extends ServiceProvider
             ->middleware('api')
             ->namespace($this->namespace)
             ->group(base_path('routes/api.php'));
+    }
+
+    /**
+     * Define the "public-api" routes for the application.
+     *
+     * @return void
+     */
+    protected function mapPublicApiRoutes()
+    {
+        Route::prefix('public-api')
+            ->middleware('api')
+            ->namespace($this->namespace)
+            ->group(base_path('routes/public-api.php'));
     }
 }

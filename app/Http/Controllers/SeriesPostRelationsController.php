@@ -10,7 +10,8 @@ use Prettus\Validator\Exceptions\ValidatorException;
 use App\Http\Requests\SeriesPostRelationCreateRequest;
 use App\Http\Requests\SeriesPostRelationUpdateRequest;
 use App\Repositories\SeriesPostRelationRepository;
-use App\Validators\SeriesPostRelationValidator;
+
+use App\Entities\Series;
 
 /**
  * Class SeriesPostRelationsController.
@@ -24,10 +25,7 @@ class SeriesPostRelationsController extends Controller
      */
     protected $repository;
 
-    /**
-     * @var SeriesPostRelationValidator
-     */
-    protected $validator;
+    protected $series;
 
     /**
      * SeriesPostRelationsController constructor.
@@ -35,10 +33,9 @@ class SeriesPostRelationsController extends Controller
      * @param SeriesPostRelationRepository $repository
      * @param SeriesPostRelationValidator $validator
      */
-    public function __construct(SeriesPostRelationRepository $repository, SeriesPostRelationValidator $validator)
+    public function __construct(SeriesPostRelationRepository $repository)
     {
-        $this->repository = $repository;
-        $this->validator  = $validator;
+        $this->repository   = $repository;
     }
 
     /**
@@ -73,10 +70,12 @@ class SeriesPostRelationsController extends Controller
     public function store(SeriesPostRelationCreateRequest $request)
     {
         try {
-
-            $this->validator->with($request->all())->passesOrFail(ValidatorInterface::RULE_CREATE);
-
             $seriesPostRelation = $this->repository->create($request->all());
+            $series = new Series;
+            $series = $series->find($request->series_id);
+            $series->update([
+                'updated_by' => $request->user()->id
+            ]);
 
             $response = [
                 'message' => 'SeriesPostRelation created.',
@@ -123,73 +122,28 @@ class SeriesPostRelationsController extends Controller
     }
 
     /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int $id
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function edit($id)
-    {
-        $seriesPostRelation = $this->repository->find($id);
-
-        return view('seriesPostRelations.edit', compact('seriesPostRelation'));
-    }
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  SeriesPostRelationUpdateRequest $request
-     * @param  string            $id
-     *
-     * @return Response
-     *
-     * @throws \Prettus\Validator\Exceptions\ValidatorException
-     */
-    public function update(SeriesPostRelationUpdateRequest $request, $id)
-    {
-        try {
-
-            $this->validator->with($request->all())->passesOrFail(ValidatorInterface::RULE_UPDATE);
-
-            $seriesPostRelation = $this->repository->update($request->all(), $id);
-
-            $response = [
-                'message' => 'SeriesPostRelation updated.',
-                'data'    => $seriesPostRelation->toArray(),
-            ];
-
-            if ($request->wantsJson()) {
-
-                return response()->json($response);
-            }
-
-            return redirect()->back()->with('message', $response['message']);
-        } catch (ValidatorException $e) {
-
-            if ($request->wantsJson()) {
-
-                return response()->json([
-                    'error'   => true,
-                    'message' => $e->getMessageBag()
-                ]);
-            }
-
-            return redirect()->back()->withErrors($e->getMessageBag())->withInput();
-        }
-    }
-
-
-    /**
      * Remove the specified resource from storage.
      *
      * @param  int $id
      *
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(SeriesPostRelationUpdateRequest $request)
     {
-        $deleted = $this->repository->delete($id);
+        $deleted = $this->repository->deletewhere(
+            [
+                'series_id' => $request->series_id,
+                'post_id'   => $request->post_id
+            ]
+        );
+
+        if($deleted !== FALSE){
+            $series = new Series;
+            $series = $series->find($request->series_id);
+            $series->update([
+                'updated_by' => $request->user()->id
+            ]);
+        }
 
         if (request()->wantsJson()) {
 

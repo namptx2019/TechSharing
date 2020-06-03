@@ -32,6 +32,8 @@ class RepositoryServiceProvider extends ServiceProvider
         $this->app->bind(\App\Repositories\RoleRepository::class, \App\Repositories\RoleRepositoryEloquent::class);
         $this->app->bind(\App\Repositories\SeriesPostRelationRepository::class, \App\Repositories\SeriesPostRelationRepositoryEloquent::class);
         $this->app->bind(\App\Repositories\UserAvatarRepository::class, \App\Repositories\UserAvatarRepositoryEloquent::class);
+        $this->app->bind(\App\Repositories\RankRepository::class, \App\Repositories\RankRepositoryEloquent::class);
+        $this->app->bind(\App\Repositories\ScoreLogRepository::class, \App\Repositories\ScoreLogRepositoryEloquent::class);
         //:end-bindings:
     }
 }

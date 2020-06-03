@@ -18,7 +18,21 @@ class HomepageSliderValidator extends LaravelValidator
      * @var array
      */
     protected $rules = [
-        ValidatorInterface::RULE_CREATE => [],
-        ValidatorInterface::RULE_UPDATE => [],
+        ValidatorInterface::RULE_CREATE => [
+            'title'     => 'required|string|max:255',
+            'image'     => 'required|file|image|max:2048',
+            'link'      => 'nullable|string',
+            'desc'      => 'required|string',
+            'status'    => 'required|integer',
+            'weight'    => 'required|integer|min:0',
+        ],
+        ValidatorInterface::RULE_UPDATE => [
+            'title'     => 'string|max:255',
+            'image'     => 'sometimes|file|image|max:2048',
+            'link'      => 'nullable|string',
+            'desc'      => 'string',
+            'status'    => 'integer',
+            'weight'    => 'required|integer|min:0',
+        ],
     ];
 }

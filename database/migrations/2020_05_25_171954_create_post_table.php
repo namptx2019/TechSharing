@@ -13,7 +13,7 @@ class CreatePostTable extends Migration
    */
   public function up()
   {
-    Schema::create('posts', function (Blueprint $table) {
+    Schema::create('post', function (Blueprint $table) {
       $table->increments('id');
       $table->string('name', 255);
       $table->text('desc');
@@ -21,7 +21,6 @@ class CreatePostTable extends Migration
       $table->unsignedInteger('category_id');
       $table->text('content');
       $table->text('slug')->nullable();
-      $table->unsignedInteger('language_id')->default(0);
       $table->unsignedInteger('viewed')->default(0);
       $table->unsignedInteger('created_by');
       $table->unsignedInteger('updated_by');
