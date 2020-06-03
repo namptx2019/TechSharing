@@ -20,6 +20,7 @@
     "chart.js": "^2.9.3",
     "classnames": "^2.2.6",
     "core-js": "^3.6.5",
+    "dotenv": "^8.2.0",
     "enzyme": "^3.11.0",
     "enzyme-adapter-react-16": "^1.15.2",
     "flag-icon-css": "^3.4.6",
@@ -32,9 +33,11 @@
     "react-dom": "^16.13.1",
     "react-router-config": "^5.1.1",
     "react-router-dom": "^5.2.0",
+    "react-select": "^3.1.0",
     "react-test-renderer": "^16.13.1",
     "reactstrap": "^8.4.1",
-    "simple-line-icons": "^2.4.1"
+    "simple-line-icons": "^2.4.1",
+    "sweetalert2": "^9.14.0"
   },
   "devDependencies": {
     "react-scripts": "^3.4.1"

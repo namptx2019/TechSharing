@@ -1,5 +1,5 @@
 import ApiService from './api.service'
-import axios from "axios";
+import { TokenService } from './token.service'
 
 class UserServiceError extends Error
 {
@@ -13,18 +13,33 @@ class UserServiceError extends Error
 }
 
 const UserService = {
-
     /**
-     * User login
+     * Login user and save access token to TokenService
+     * @param data
      *
-     * @return { Object }
+     * @return access_token
+     * @throw AuthenticationError
      */
     login: async function(data){
+        const requestData = {
+            method: 'post',
+            url: '/oauth/token',
+            data: {
+                grant_type: 'password',
+                username: data.email,
+                password: data.password,
+                client_id: 2,
+                client_secret: 'sEfLa8mf6uc1uQM2hq1F7AEM1M4MvjAX1T34KZEY',
+                scope: '*'
+            }
+        }
         try {
-            const response = await ApiService.post('/api/user/auth', data);
+            const response = await ApiService.customRequest(requestData);
+            TokenService.saveToken(response.data.access_token);
+            ApiService.setHeader();
             return response.data;
-        } catch(e) {
-            throw new UserServiceError(e.response.status, e.response.data.message);
+        } catch (error) {
+            throw new UserServiceError(error.response.status, error.response.data.message);
         }
     },
 

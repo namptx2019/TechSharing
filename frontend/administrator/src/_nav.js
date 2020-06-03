@@ -4,29 +4,60 @@ export default {
       name: 'Dashboard',
       url: '/dashboard',
       icon: 'icon-speedometer',
-      badge: {
-        variant: 'info',
-        text: 'NEW',
-      },
     },
     {
       title: true,
-      name: 'Theme',
-      wrapper: {            // optional wrapper object
-        element: '',        // required valid HTML5 element tag
-        attributes: {}        // optional valid JS object with JS API naming ex: { className: "my-class", style: { fontFamily: "Verdana" }, id: "my-id"}
+      name: 'Contents Management',
+      wrapper: {
+        element: '',
+        attributes: {},
       },
-      class: ''             // optional class names space delimited list for title item ex: "text-center"
     },
     {
-      name: 'Colors',
-      url: '/theme/colors',
-      icon: 'icon-drop',
+      name: 'Category',
+      url: '/category',
+      icon: 'fa fa-th-large',
     },
     {
-      name: 'Typography',
-      url: '/theme/typography',
-      icon: 'icon-pencil',
+      name: 'Posts',
+      url: '/post',
+      icon: 'fa fa-file-text-o',
+    },
+    {
+      name: 'Series',
+      url: '/series',
+      icon: 'fa fa-files-o',
+    },
+    {
+      title: true,
+      name: 'Users Management',
+      wrapper: {
+        element: '',
+        attributes: {},
+      },
+    },
+    {
+      name: 'Users',
+      url: '/user',
+      icon: 'fa fa-user-o',
+    },
+    {
+      name: 'Rank',
+      url: '/rank',
+      icon: 'fa fa-certificate',
+    },
+    {
+      title: true,
+      name: 'System Management',
+      wrapper: {
+        element: '',
+        attributes: {},
+      },
+    },
+    {
+      name: 'Homepage Slider',
+      url: '/homepage-slider',
+      icon: 'fa fa-desktop',
     },
     {
       title: true,
@@ -213,15 +244,6 @@ export default {
       ],
     },
     {
-      name: 'Widgets',
-      url: '/widgets',
-      icon: 'icon-calculator',
-      badge: {
-        variant: 'info',
-        text: 'NEW',
-      },
-    },
-    {
       divider: true,
     },
     {
@@ -254,27 +276,6 @@ export default {
           icon: 'icon-star',
         },
       ],
-    },
-    {
-      name: 'Disabled',
-      url: '/dashboard',
-      icon: 'icon-ban',
-      attributes: { disabled: true },
-    },
-    {
-      name: 'Download CoreUI',
-      url: 'https://coreui.io/react/',
-      icon: 'icon-cloud-download',
-      class: 'mt-auto',
-      variant: 'success',
-      attributes: { target: '_blank', rel: "noopener" },
-    },
-    {
-      name: 'Try CoreUI PRO',
-      url: 'https://coreui.io/pro/react/',
-      icon: 'icon-layers',
-      variant: 'danger',
-      attributes: { target: '_blank', rel: "noopener" },
     },
   ],
 };

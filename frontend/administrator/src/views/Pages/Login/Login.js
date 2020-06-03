@@ -1,24 +1,35 @@
 import React, { useState } from 'react';
-import { Button, Card, CardBody, CardGroup, Col, Container, Form, Input, InputGroup, InputGroupAddon, InputGroupText, Row } from 'reactstrap';
+import {
+  Alert,
+  Button,
+  Card,
+  CardBody,
+  CardGroup,
+  Col,
+  Container,
+  Form,
+  Input,
+  InputGroup,
+  InputGroupAddon,
+  InputGroupText,
+  Row
+} from 'reactstrap';
 import '../../../scss/login.scss';
 import UserService, { UserServiceError } from "../../../services/user.service"
-import { TokenService } from '../../../services/token.service'
-import { useHistory } from "react-router-dom";
 
 const Login  = ({}) => {
   const [User, setUser] = useState({});
+  const [error, setError] = useState([]);
   const handleChange = (event) => {
     User[event.target.name] = event.target.value;
   };
-  const history = useHistory();
   const handleSubmit = async (data) => {
     try {
       const response = await UserService.login(data);
-      TokenService.saveToken(response.access_token);
-      history.push("/");
+      window.location.href = '/';
     } catch(e) {
       if(e instanceof UserServiceError){
-        console.log(e);
+        setError(e)
       }
     }
   };
@@ -30,6 +41,12 @@ const Login  = ({}) => {
             <CardGroup>
               <Card className="p-4">
                 <CardBody>
+                  { error.length !== 0 &&
+                    <Alert color="danger">
+                      Wrong credentials
+                    </Alert>
+                  }
+
                   <Form>
                     <h1>Login</h1>
                     <p className="text-muted">Sign In to your account</p>

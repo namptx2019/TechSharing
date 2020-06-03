@@ -138,8 +138,6 @@ UsersController extends Controller
                 $value->entityInstance->post;
             }
         }
-        $user->display_settings = $user->displaySettings();
-        $user->default_settings = User::$settingsConverted;
 
         if (request()->wantsJson()) {
 
@@ -170,7 +168,6 @@ UsersController extends Controller
             }
         }
 
-        $user->display_settings = $user->displaySettings();
 
         if (request()->wantsJson()) {
 
@@ -235,8 +232,6 @@ UsersController extends Controller
             }
 
             $user = $this->repository->with('avatars')->update($request, $uuid);
-            $user->display_settings = $user->displaySettings();
-            $user->default_settings = User::$settingsConverted;
 
             $response = [
                 'message' => 'Profile updated.',

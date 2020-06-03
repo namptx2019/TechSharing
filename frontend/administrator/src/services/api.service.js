@@ -1,10 +1,10 @@
 import axios from 'axios'
+import { TokenService } from './token.service'
 
 const ApiService = {
     init(baseURL){
         axios.defaults.baseURL = baseURL;
     },
-
     setHeader(){
         let token = localStorage.getItem('access_token');
         axios.defaults.headers.Authorization = `Bearer ${token}`;
@@ -15,15 +15,15 @@ const ApiService = {
     },
 
     post(resource, data){
-        return axios.post(resource, data);
+        return axios.post(resource, data, this.setHeader());
     },
 
     delete(resource){
-        return axios.delete(resource);
+        return axios.delete(resource, this.setHeader());
     },
 
     customRequest(data){
-        return axios(data);
+        return axios(data, this.setHeader());
     }
 }
 

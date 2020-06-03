@@ -18,27 +18,6 @@ const authCheck = {
   isAuthenticated: !!TokenService.getToken(),
 };
 
-const PrivateRoute = ({ children, ...rest }) => {
-  console.log(children);
-  return (
-    <Route
-      {...rest}
-      render={({ location }) =>
-        authCheck.isAuthenticated ? (
-          children
-        ) : (
-          <Redirect
-            to={{
-              pathname: "/login",
-              state: { from: location }
-            }}
-          />
-        )
-      }
-    />
-  );
-}
-
 const App = ({}) => {
   return (
     <HashRouter>
@@ -48,9 +27,7 @@ const App = ({}) => {
             <Route exact path="/register" name="Register Page" render={props => <Register {...props}/>} />
             <Route exact path="/404" name="Page 404" render={props => <Page404 {...props}/>} />
             <Route exact path="/500" name="Page 500" render={props => <Page500 {...props}/>} />
-            <PrivateRoute path="/">
-              <Route  name="Home" render={props => <DefaultLayout {...props}/>} />
-            </PrivateRoute>
+            {!authCheck.isAuthenticated ? <Redirect to="/login" /> : <Route path="/" name="Home" render={props => <DefaultLayout {...props}/>} /> }
           </Switch>
         </React.Suspense>
     </HashRouter>

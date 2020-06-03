@@ -31,44 +31,9 @@ class User extends Authenticatable implements Transformable
         'phone',
         'date_of_birth',
         'working_place',
-        'facebook',
-        'skype',
-        'twitter',
-        'linkedin',
-        'entry',
-        'ip_last',
-        'location',
-        'country',
-        'role_id',
-        'status',
         'uuid',
         'avatar',
-        'default_language',
-        'settings',
         'score'
-    ];
-
-    /**
-     * Using bit for display settings
-     */
-    public static $settings =  [
-        'display_email'     => 1,
-        'display_facebook'  => 2,
-        'display_skype'     => 4,
-        'display_phone'     => 8,
-        'display_dob'       => 16,
-        'display_twitter'   => 32,
-        'display_linkedin'  => 64
-    ];
-
-    public static $settingsConverted =  [
-        'email'         => 1,
-        'facebook'      => 2,
-        'skype'         => 4,
-        'phone'         => 8,
-        'date_of_birth' => 16,
-        'twitter'       => 32,
-        'linkedin'      => 64
     ];
 
     /**
