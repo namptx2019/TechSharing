@@ -22,6 +22,18 @@ export default {
       name: 'Posts',
       url: '/post',
       icon: 'fa fa-file-text-o',
+      children: [
+        {
+          name: 'Posts Lists',
+          url: '/posts/list',
+          icon: 'icon-puzzle',
+        },
+        {
+          name: 'Add post',
+          url: '/posts/add',
+          icon: 'icon-puzzle',
+        },
+      ],
     },
     {
       name: 'Series',

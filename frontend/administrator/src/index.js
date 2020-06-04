@@ -11,6 +11,9 @@ import * as serviceWorker from './serviceWorker';
 import ApiService from './services/api.service'
 import {TokenService} from './services/token.service'
 ApiService.init(process.env.REACT_APP_API_URL)
+if(TokenService.getToken()){
+  ApiService.setHeader();
+}
 ReactDOM.render(<App />, document.getElementById('root'));
 
 // If you want your app to work offline and load faster, you can change

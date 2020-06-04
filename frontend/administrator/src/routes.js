@@ -36,11 +36,14 @@ const Widgets = React.lazy(() => import('./views/Widgets/Widgets'));
 const Users = React.lazy(() => import('./views/Users/Users'));
 const User = React.lazy(() => import('./views/Users/User'));
 const Category = React.lazy(() => import('./views/Category'));
-
+const ListPosts = React.lazy(() => import('./views/Post/List'));
+const AddPost = React.lazy(() => import('./views/Post/Add'));
 // https://github.com/ReactTraining/react-router/tree/master/packages/react-router-config
 const routes = [
   { path: '/', exact: true, name: 'Home' },
   { path: '/category', name: 'Category', component: Category },
+  { path: '/posts/add', name: 'Add Post', component: AddPost },
+  { path: '/posts/list', name: 'Posts List', component: ListPosts },
   { path: '/dashboard', name: 'Dashboard', component: Dashboard },
   { path: '/theme', exact: true, name: 'Theme', component: Colors },
   { path: '/theme/colors', name: 'Colors', component: Colors },

@@ -16,7 +16,7 @@ import {
 import CategoryService, {CategoryServiceError} from "../../services/category.service";
 import swal from 'sweetalert2'
 
-const Category  = ({}) => {
+const ListPosts  = ({}) => {
   const [Category, setCategory] = useState({});
   const [CategoryList, setCategoryList] = useState([]);
   const [error, setError] = useState([]);
@@ -34,7 +34,7 @@ const Category  = ({}) => {
       ({
         id: prevState.id,   // keep all other key-value pairs
         name: event.target.value     // update the value of specific key
-    }));
+      }));
   };
 
   const toggle = () => {
@@ -106,7 +106,7 @@ const Category  = ({}) => {
       return response;
     } catch(e) {
       if(e instanceof CategoryServiceError){
-        
+
       }
     }
   };
@@ -128,37 +128,12 @@ const Category  = ({}) => {
   };
 
   useEffect(() => {
-    fetchCategories();
+    // fetchCategories();
   },[]);
 
   return (
     <Row>
-      <Col xs="12" sm="4">
-        <Card>
-          <CardHeader>
-            <strong>Add category</strong>
-          </CardHeader>
-          <CardBody>
-            { error.length !== 0 &&
-            <Alert color="danger">
-              Wrong credentials
-            </Alert>
-            }
-            <Row>
-              <Col xs="12">
-                <FormGroup>
-                  <Label htmlFor="name">Name</Label>
-                  <Input type="text" id="name" name="name" placeholder="Enter category's name" required onChange={(e) => handleChangeAdd(e)} />
-                </FormGroup>
-              </Col>
-            </Row>
-          </CardBody>
-          <CardFooter>
-            <Button type="submit" size="sm" color="primary" onClick={() => handleSubmitAdd(Category)}><i className="fa fa-dot-circle-o"></i> Submit</Button>
-          </CardFooter>
-        </Card>
-      </Col>
-      <Col xs="12" sm="8">
+      <Col xs="12" sm="12">
         <Card>
           <Table responsive hover>
             <thead>
@@ -174,26 +149,9 @@ const Category  = ({}) => {
           </Table>
         </Card>
       </Col>
-      <Modal isOpen={modal} toggle={toggle}>
-        <ModalHeader toggle={toggle}>Edit category</ModalHeader>
-        <ModalBody>
-          <Row>
-            <Col xs="12">
-              <FormGroup>
-                <Label htmlFor="name">Name</Label>
-                <Input type="text" id="name" name="name" placeholder="Enter category's name" value={SelectedCategory.name} onChange={(e) => handleChangeEdit(e)} />
-              </FormGroup>
-            </Col>
-          </Row>
-        </ModalBody>
-        <ModalFooter>
-          <Button color="primary" onClick={() => handleSubmitEdit(SelectedCategory.id, SelectedCategory)}>Save</Button>{' '}
-          <Button color="secondary" onClick={toggle}>Cancel</Button>
-        </ModalFooter>
-      </Modal>
     </Row>
   );
 
 }
 
-export default Category;
+export default ListPosts;
