@@ -84,7 +84,7 @@ class Post extends Model implements Transformable
 
     public function category()
     {
-        return $this->belongsTo(Category::class, 'category_id', 'id')->with('getParent');
+        return $this->belongsTo(Category::class, 'category_id', 'id');
     }
 
     public function lastUpdateBy()

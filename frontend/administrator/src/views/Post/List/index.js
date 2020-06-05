@@ -10,52 +10,53 @@ import {
   Label,
   Row,
   Table,
+  Pagination,
+  PaginationItem,
+  PaginationLink,
   Modal,
   ModalHeader, ModalBody, ModalFooter
 } from 'reactstrap';
-import CategoryService, {CategoryServiceError} from "../../services/category.service";
-import swal from 'sweetalert2'
+import PostService, {PostServiceError} from "../../../services/post.service";
+import swal from "sweetalert2";
+import { useHistory } from "react-router-dom";
+
 
 const ListPosts  = ({}) => {
-  const [Category, setCategory] = useState({});
-  const [CategoryList, setCategoryList] = useState([]);
-  const [error, setError] = useState([]);
-  const [modal, setModal] = useState(false);
-  const [SelectedCategory, setSelectedCategory] = useState({});
+  const [PostList, setPostList] = useState([]);
+  const [currentPage, setCurrentPage] = useState(0);
+  const pageSize = 20;
+  const pagesCount = Math.ceil(PostList.length / pageSize);
+  const history = useHistory();
 
-  const handleChangeAdd = (event) => {
-    event.persist();
-    const { name, value } = event.target;
-    Category[name] = value;
-  };
-  const handleChangeEdit = (event) => {
-    event.persist();
-    setSelectedCategory((prevState) =>
-      ({
-        id: prevState.id,   // keep all other key-value pairs
-        name: event.target.value     // update the value of specific key
-      }));
-  };
-
-  const toggle = () => {
-    setModal(!modal);
-  }
-
-  const fetchCategories = async () => {
+  const fetchPosts = async () => {
     try {
-      const response = await CategoryService.get();
-      setCategoryList(response.data);
+      const response = await PostService.getList();
+      setPostList(response.data);
       return response;
     } catch(e) {
-      if(e instanceof CategoryServiceError){
+      if(e instanceof PostServiceError){
 
       }
     }
   }
 
-  const getSelectedCategory = (row) =>{
-    setModal(!modal);
-    setSelectedCategory(row);
+  const items = PostList.slice(currentPage * pageSize, (currentPage + 1) * pageSize)
+    .map(item => {
+    return (
+      <tr key={item.id}>
+        <td>{item.name}</td>
+        <td>{item.category.name}</td>
+        <td>
+          <Button color="warning" size="sm" onClick={() => history.push('/posts/' + item.id)}>Edit</Button>
+          <Button color="danger" size="sm" className="ml-2" onClick={() => deleteSelected(item)}>Delete</Button>
+        </td>
+      </tr>
+    )
+  })
+
+  const handlePageClick = (e, index) => {
+    e.preventDefault();
+    setCurrentPage(index);
   }
 
   const deleteSelected = (row) =>{
@@ -67,14 +68,14 @@ const ListPosts  = ({}) => {
       confirmButtonColor: '#3085d6',
       cancelButtonColor: '#d33',
       confirmButtonText: 'Yes, delete it!'
-    }).then((result) => {
+    }).then ((result) => {
       if (result.value) {
         try {
-          const response = CategoryService.delete(row.id);
-          fetchCategories();
+          const response = PostService.delete(row.id);
+          fetchPosts();
           return response;
         } catch(e) {
-          if(e instanceof CategoryServiceError){
+          if(e instanceof PostServiceError){
 
           }
         }
@@ -83,73 +84,60 @@ const ListPosts  = ({}) => {
   }
 
 
-  const items = CategoryList.map(item => {
-    return (
-      <tr key={item.id}>
-        <td>{item.name}</td>
-        <td>{item.created_by.username}</td>
-        <td>
-          <Button color="warning" size="sm" onClick={() => getSelectedCategory(item)}>Edit</Button>
-          <Button color="danger" size="sm" className="ml-2" onClick={() => deleteSelected(item)}>Delete</Button>
-        </td>
-      </tr>
-    )
-  })
-
-  const handleSubmitAdd = async (data) => {
-    try {
-      const response = await CategoryService.create(data);
-      fetchCategories();
-      if(response.error){
-        setError(response.error);
-      }
-      return response;
-    } catch(e) {
-      if(e instanceof CategoryServiceError){
-
-      }
-    }
-  };
-
-  const handleSubmitEdit = async (id,data) => {
-    try {
-      const response = await CategoryService.edit(id,data);
-      toggle();
-      fetchCategories();
-      if(response.error){
-        setError(response.error);
-      }
-      return response;
-    } catch(e) {
-      if(e instanceof CategoryServiceError){
-
-      }
-    }
-  };
-
   useEffect(() => {
-    // fetchCategories();
+    fetchPosts();
   },[]);
 
   return (
-    <Row>
-      <Col xs="12" sm="12">
-        <Card>
-          <Table responsive hover>
-            <thead>
-            <tr>
-              <th>Name</th>
-              <th>Creator</th>
-              <th>Actions</th>
-            </tr>
-            </thead>
-            <tbody>
-            {items}
-            </tbody>
-          </Table>
-        </Card>
-      </Col>
-    </Row>
+    <div>
+      <div className="mb-2">
+        <Button color="primary" className="btn-pill">
+          <i className="fa fa-plus mr-1"></i>Add post
+        </Button>
+      </div>
+      <Row>
+        <Col xs="12" sm="12">
+          <Card>
+            <Table responsive hover>
+              <thead>
+              <tr>
+                <th>Name</th>
+                <th>Category</th>
+                <th>Actions</th>
+              </tr>
+              </thead>
+              <tbody>
+              {items}
+              </tbody>
+            </Table>
+            <Pagination>
+              <PaginationItem disabled={currentPage <= 0}>
+                <PaginationLink
+                  onClick={e => handlePageClick(e, currentPage - 1)}
+                  previous
+                  href="#"
+                />
+              </PaginationItem>
+              {[...Array(pagesCount)].map((page, i) =>
+                <PaginationItem active={i === currentPage} key={i}>
+                  <PaginationLink onClick={e => handlePageClick(e, i)} href="#">
+                    {i + 1}
+                  </PaginationLink>
+                </PaginationItem>
+              )}
+              <PaginationItem disabled={currentPage >= pagesCount - 1}>
+                <PaginationLink
+                  onClick={e => handlePageClick(e, currentPage + 1)}
+                  next
+                  href="#"
+                />
+              </PaginationItem>
+            </Pagination>
+          </Card>
+        </Col>
+      </Row>
+    </div>
+
   );
 
 }

@@ -90,7 +90,7 @@ class SeriesController extends Controller
             ];
 
             // Emit event to increase score for user
-            event(new Scoring($request->user(), config('settings.SCORE_SERIES_CREATE'), 'create', $series));
+            event(new Scoring($request->user(), 100, 'create', $series));
 
             if ($request->wantsJson()) {
 

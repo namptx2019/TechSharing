@@ -44,6 +44,7 @@ const routes = [
   { path: '/category', name: 'Category', component: Category },
   { path: '/posts/add', name: 'Add Post', component: AddPost },
   { path: '/posts/list', name: 'Posts List', component: ListPosts },
+  { path: '/posts/:id', name: 'Edit Post', component: AddPost },
   { path: '/dashboard', name: 'Dashboard', component: Dashboard },
   { path: '/theme', exact: true, name: 'Theme', component: Colors },
   { path: '/theme/colors', name: 'Colors', component: Colors },

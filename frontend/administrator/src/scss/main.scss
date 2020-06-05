@@ -1,0 +1,19 @@
+.pagination {
+  justify-content: flex-end;
+  margin-right: 20px;
+}
+
+.file-input-section{
+  display: inline-flex;
+  align-items: center;
+  .preview-thumbnail{
+    width: auto;
+    height: 120px;
+    background-size: cover;
+    margin-right: 30px;
+  }
+}
+
+.ql-container{
+  height: 350px !important;
+}
