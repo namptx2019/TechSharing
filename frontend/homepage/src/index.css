@@ -15925,7 +15925,6 @@ body .background {
   }
   .header-section .logo img {
     height: 2.5rem;
-    filter: brightness(0) invert(1);
   }
   .header-section .nav-items .nav-item {
     font-weight: bold;
