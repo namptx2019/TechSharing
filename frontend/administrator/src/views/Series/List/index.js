@@ -1,59 +1,52 @@
-import React, { Component, useState, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import {
-  Alert,
   Button,
   Card,
-  CardBody, CardFooter,
-  CardHeader,
   Col,
-  FormGroup, Input,
-  Label,
   Row,
   Table,
   Pagination,
   PaginationItem,
   PaginationLink,
-  Modal,
-  ModalHeader, ModalBody, ModalFooter
 } from 'reactstrap';
-import PostService, {PostServiceError} from "../../../services/post.service";
+import SeriesService, {SeriesServiceError} from "../../../services/series.service";
 import swal from "sweetalert2";
 import { useHistory } from "react-router-dom";
 
 
-const ListPosts  = ({}) => {
-  const [PostList, setPostList] = useState([]);
+const ListSeries  = ({}) => {
+  const [SeriesList, setSeriesList] = useState([]);
   const [currentPage, setCurrentPage] = useState(0);
   const pageSize = 20;
-  const pagesCount = Math.ceil(PostList.length / pageSize);
+  const pagesCount = Math.ceil(SeriesList.length / pageSize);
   const history = useHistory();
 
-  const fetchPosts = async () => {
+  const fetchSeries = async () => {
     try {
-      const response = await PostService.getList();
-      setPostList(response.data);
+      const response = await SeriesService.getList();
+      setSeriesList(response.data);
       return response;
     } catch(e) {
-      if(e instanceof PostServiceError){
+      if(e instanceof SeriesServiceError){
 
       }
     }
   }
 
-  const items = PostList.slice(currentPage * pageSize, (currentPage + 1) * pageSize)
+  const items = SeriesList.slice(currentPage * pageSize, (currentPage + 1) * pageSize)
     .map(item => {
-    return (
-      <tr key={item.id}>
-        <td>{item.name}</td>
-        <td>{item.author?.username}</td>
-        <td>{item.category.name}</td>
-        <td>
-          <Button color="warning" size="sm" onClick={() => history.push('/posts/' + item.id)}>Edit</Button>
-          <Button color="danger" size="sm" className="ml-2" onClick={() => deleteSelected(item)}>Delete</Button>
-        </td>
-      </tr>
-    )
-  })
+      return (
+        <tr key={item.id}>
+          <td>{item.name}</td>
+          <td>{item.author?.username}</td>
+          <td>{item.category?.name}</td>
+          <td>
+            <Button color="warning" size="sm" onClick={() => history.push('/series/' + item.id)}>Edit</Button>
+            <Button color="danger" size="sm" className="ml-2" onClick={() => deleteSelected(item)}>Delete</Button>
+          </td>
+        </tr>
+      )
+    })
 
   const handlePageClick = (e, index) => {
     e.preventDefault();
@@ -72,11 +65,11 @@ const ListPosts  = ({}) => {
     }).then ((result) => {
       if (result.value) {
         try {
-          const response = PostService.delete(row.id);
-          fetchPosts();
+          const response = SeriesService.delete(row.id);
+          fetchSeries();
           return response;
         } catch(e) {
-          if(e instanceof PostServiceError){
+          if(e instanceof SeriesServiceError){
 
           }
         }
@@ -86,14 +79,14 @@ const ListPosts  = ({}) => {
 
 
   useEffect(() => {
-    fetchPosts();
+    fetchSeries();
   },[]);
 
   return (
     <div>
       <div className="mb-2">
-        <Button color="primary" className="btn-pill" onClick={() => history.push('/posts/add')}>
-          <i className="fa fa-plus mr-1"></i>Add post
+        <Button color="primary" className="btn-pill" onClick={() => history.push('/series/add')}>
+          <i className="fa fa-plus mr-1"></i>Add series
         </Button>
       </div>
       <Row>
@@ -144,4 +137,4 @@ const ListPosts  = ({}) => {
 
 }
 
-export default ListPosts;
+export default ListSeries;

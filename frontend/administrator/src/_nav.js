@@ -39,6 +39,18 @@ export default {
       name: 'Series',
       url: '/series',
       icon: 'fa fa-files-o',
+      children: [
+        {
+          name: 'Series Lists',
+          url: '/series/list',
+          icon: 'icon-puzzle',
+        },
+        {
+          name: 'Add series',
+          url: '/series/add',
+          icon: 'icon-puzzle',
+        },
+      ],
     },
     {
       title: true,

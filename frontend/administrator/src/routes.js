@@ -38,13 +38,22 @@ const User = React.lazy(() => import('./views/Users/User'));
 const Category = React.lazy(() => import('./views/Category'));
 const ListPosts = React.lazy(() => import('./views/Post/List'));
 const AddPost = React.lazy(() => import('./views/Post/Add'));
+const ListSeries = React.lazy(() => import('./views/Series/List'));
+const AddSeries = React.lazy(() => import('./views/Series/Add'));
+const EditSeries = React.lazy(() => import('./views/Series/Edit'));
 // https://github.com/ReactTraining/react-router/tree/master/packages/react-router-config
 const routes = [
   { path: '/', exact: true, name: 'Home' },
   { path: '/category', name: 'Category', component: Category },
+  //Post Route
   { path: '/posts/add', name: 'Add Post', component: AddPost },
   { path: '/posts/list', name: 'Posts List', component: ListPosts },
   { path: '/posts/:id', name: 'Edit Post', component: AddPost },
+  //Series Route
+  { path: '/series/list', name: 'Series List', component: ListSeries },
+  { path: '/series/add', name: 'Add Series', component: AddSeries },
+  { path: '/series/:id', name: 'Edit Series', component: EditSeries },
+
   { path: '/dashboard', name: 'Dashboard', component: Dashboard },
   { path: '/theme', exact: true, name: 'Theme', component: Colors },
   { path: '/theme/colors', name: 'Colors', component: Colors },

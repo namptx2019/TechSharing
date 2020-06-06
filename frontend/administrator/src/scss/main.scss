@@ -17,3 +17,44 @@
 .ql-container{
   height: 350px !important;
 }
+
+.post-item-accordion-added{
+  background-color: #36a3f7;
+  border: 1px solid #36a3f7;
+  color: white;
+  &:hover{
+    background-color: #F71949 !important;
+  }
+  .post-item-accordion__button{
+    color: #ffffff !important;
+  }
+}
+.post-item-accordion{
+  display: table;
+  padding: 1rem 2rem;
+  width: 100%;
+  overflow: hidden;
+  border: 1px solid #ebedf2;
+  margin-bottom: 10px;
+  .post-item-accordion__icon{
+    display: table-cell;
+    vertical-align: middle;
+    line-height: 0;
+    padding-right: 1rem;
+    font-size: 1.2rem;
+  }
+  .post-item-accordion__title{
+    display: table-cell;
+    vertical-align: middle;
+    width: 100%;
+    font-size: 1.2rem;
+  }
+  .post-item-accordion__button{
+    color: #a4a6ae;
+    font-size: 1.3rem;
+  }
+  &:hover{
+    background-color: #f4f5f8;
+    cursor: pointer;
+  }
+}

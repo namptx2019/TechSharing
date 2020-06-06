@@ -26,10 +26,6 @@ class SeriesTransformer extends TransformerAbstract
             $data->slug = $post->slug;
             $data->id   = $post->id;
             $data->desc = $post->desc;
-            $data->author = [
-                'uuid'  => $post->author->uuid,
-                'username'  => $post->author->username
-            ];
             $data->thumbnail = $post->full_path;
             $data->created_at = $post->created_at;
             $result[$i] = $data;
