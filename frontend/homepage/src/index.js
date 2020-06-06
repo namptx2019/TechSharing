@@ -1,28 +1,41 @@
-import React, { useEffect, useState } from "react";
-import ReactDOM from "react-dom";
-import "./styles.css";
-import Login from "./login";
-import Register from "./Register";
-import Nav from './components/Navigation';
-import ApiService from './services/api.service'
-import { BrowserRouter, Route, Switch, Redirect } from "react-router-dom";
-import Main from "./Main";
+import React from 'react';
+import ReactDOM from 'react-dom';
+import './index.css';
+import Login from './Login/Login';
+import MainNav from './MainNav';
+import {
+    BrowserRouter as Router,
+    Switch,
+    Route,
+    Link,
+    useParams,
+    useRouteMatch
+  } from "react-router-dom";
+import App from './App';
 
-ApiService.init(process.env.REACT_APP_API_URL);
-function App() {
-  return (
-    <div className="App">
-        <BrowserRouter>
-            <div>
-                <Nav/>
-                <Route path="/login" component={Login} />
-                <Route path="/register" component={Register} />
-                <Route path="/main" component={Main} />
-            </div>
-        </BrowserRouter>
-    </div>
-  );
+function Homepage () {
+    return(
+        <div>
+            <Router>
+                <MainNav/>
+
+                <Switch>
+                    <Route exact path="/">
+                        <App />
+                    </Route>
+
+                    <Route exact path="/login">
+                        <Login />
+                    </Route>
+                </Switch>
+            </Router>
+            
+        </div>
+    );
 }
 
+// ========================================
+
 const rootElement = document.getElementById("root");
-ReactDOM.render(<App />, rootElement);
+ReactDOM.render(<Homepage />, rootElement);
+  
