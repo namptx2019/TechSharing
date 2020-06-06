@@ -33,14 +33,14 @@ const Modals = React.lazy(() => import('./views/Notifications/Modals'));
 const Colors = React.lazy(() => import('./views/Theme/Colors'));
 const Typography = React.lazy(() => import('./views/Theme/Typography'));
 const Widgets = React.lazy(() => import('./views/Widgets/Widgets'));
-const Users = React.lazy(() => import('./views/Users/Users'));
-const User = React.lazy(() => import('./views/Users/User'));
 const Category = React.lazy(() => import('./views/Category'));
 const ListPosts = React.lazy(() => import('./views/Post/List'));
 const AddPost = React.lazy(() => import('./views/Post/Add'));
 const ListSeries = React.lazy(() => import('./views/Series/List'));
 const AddSeries = React.lazy(() => import('./views/Series/Add'));
 const EditSeries = React.lazy(() => import('./views/Series/Edit'));
+const ListUsers = React.lazy(() => import('./views/Users/List'));
+const AddUser = React.lazy(() => import('./views/Users/Add'));
 // https://github.com/ReactTraining/react-router/tree/master/packages/react-router-config
 const routes = [
   { path: '/', exact: true, name: 'Home' },
@@ -53,6 +53,11 @@ const routes = [
   { path: '/series/list', name: 'Series List', component: ListSeries },
   { path: '/series/add', name: 'Add Series', component: AddSeries },
   { path: '/series/:id', name: 'Edit Series', component: EditSeries },
+  //User Route
+  { path: '/users/list', name: 'Users List', component: ListUsers },
+  { path: '/users/add', name: 'Add User', component: AddUser },
+  { path: '/users/:uuid', name: 'Edit User', component: AddUser },
+
 
   { path: '/dashboard', name: 'Dashboard', component: Dashboard },
   { path: '/theme', exact: true, name: 'Theme', component: Colors },
@@ -92,8 +97,6 @@ const routes = [
   { path: '/notifications/modals', name: 'Modals', component: Modals },
   { path: '/widgets', name: 'Widgets', component: Widgets },
   { path: '/charts', name: 'Charts', component: Charts },
-  { path: '/users', exact: true,  name: 'Users', component: Users },
-  { path: '/users/:id', exact: true, name: 'User Details', component: User },
 ];
 
 export default routes;

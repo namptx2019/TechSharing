@@ -64,6 +64,18 @@ export default {
       name: 'Users',
       url: '/user',
       icon: 'fa fa-user-o',
+      children: [
+        {
+          name: 'Users Lists',
+          url: '/users/list',
+          icon: 'icon-puzzle',
+        },
+        {
+          name: 'Add users',
+          url: '/users/add',
+          icon: 'icon-puzzle',
+        },
+      ],
     },
     {
       name: 'Rank',
