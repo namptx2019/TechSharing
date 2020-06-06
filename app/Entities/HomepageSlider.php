@@ -30,7 +30,6 @@ class HomepageSlider extends Model implements Transformable
         'thumbnail',
         'link',
         'desc',
-        'weight',
         'created_by',
         'updated_by',
         'status'

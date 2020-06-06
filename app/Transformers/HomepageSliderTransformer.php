@@ -29,7 +29,6 @@ class HomepageSliderTransformer extends TransformerAbstract
             'thumbnail'  => $model->thumbnail,
             'link'       => $model->link,
             'desc'       => $model->desc,
-            'weight'     => $model->weight,
             'status'     => $model->status,
             'created_by' => [
                 'username'  => $createdBy->username,
