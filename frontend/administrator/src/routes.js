@@ -41,6 +41,7 @@ const AddSeries = React.lazy(() => import('./views/Series/Add'));
 const EditSeries = React.lazy(() => import('./views/Series/Edit'));
 const ListUsers = React.lazy(() => import('./views/Users/List'));
 const AddUser = React.lazy(() => import('./views/Users/Add'));
+const Rank = React.lazy(() => import('./views/Rank'));
 // https://github.com/ReactTraining/react-router/tree/master/packages/react-router-config
 const routes = [
   { path: '/', exact: true, name: 'Home' },
@@ -57,7 +58,8 @@ const routes = [
   { path: '/users/list', name: 'Users List', component: ListUsers },
   { path: '/users/add', name: 'Add User', component: AddUser },
   { path: '/users/:uuid', name: 'Edit User', component: AddUser },
-
+//Rank Route
+  { path: '/rank', name: 'Rank', component: Rank },
 
   { path: '/dashboard', name: 'Dashboard', component: Dashboard },
   { path: '/theme', exact: true, name: 'Theme', component: Colors },
