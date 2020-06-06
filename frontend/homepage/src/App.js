@@ -1,10 +1,13 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
+import Slider from './Slider/Slider';
+import RadientBackground from './RadientBackground/RadientBackground';
 
 const App = () => {
     return(
         <div>
-            <h1>Main app</h1>
+            <RadientBackground/>
+            <Slider/>
         </div>
     );
 }

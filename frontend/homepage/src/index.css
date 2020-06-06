@@ -7,6 +7,8 @@
  * Copyright 2011-2018 Twitter, Inc.
  * Licensed under MIT (https://github.com/twbs/bootstrap/blob/master/LICENSE)
  */
+
+
 :root {
   --blue: #3490dc;
   --indigo: #6574cd;
@@ -69,6 +71,10 @@ body {
   color: #212529;
   text-align: left;
   background-color: #f8fafc;
+}
+
+.background{
+  background-image: url("./static/images/bg-desk.svg");
 }
 
 [tabindex="-1"]:focus {
