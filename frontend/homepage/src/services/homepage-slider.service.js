@@ -19,11 +19,7 @@ const SliderService = {
      */
     get: async function(){
         try {
-            const response = await ApiService.get('/public-api/homepage-slider', {
-                params: {
-                    lang: LanguageService.getLang(),
-                }
-            });
+            const response = await ApiService.get('/public-api/homepage-slider');
             return response.data;
         } catch(e) {
             throw new SliderServiceError(e.response.status, e.response.data.message);
