@@ -7,7 +7,7 @@ import PopularSeries from './PopularSeries/PopularSeries';
 import LeaderBoard from './LeaderBoard/LeaderBoard';
 import LatestPost from './posts/LatestPost';
 
-const App = () => {
+const HomePage = () => {
     return(
         <div>
             <RadientBackground/>
@@ -20,4 +20,4 @@ const App = () => {
     );
 }
 
-export default App;
+export default HomePage;

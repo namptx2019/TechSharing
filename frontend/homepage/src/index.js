@@ -11,9 +11,11 @@ import {
     useParams,
     useRouteMatch
   } from "react-router-dom";
-import App from './App';
+import HomePage from './HomePage';
+import MainFooter from './MainFooter';
 
-function Homepage () {
+
+function App () {
     return(
         <div>
             <Router>
@@ -21,13 +23,15 @@ function Homepage () {
 
                 <Switch>
                     <Route exact path="/">
-                        <App />
+                        <HomePage />
                     </Route>
 
                     <Route exact path="/login">
                         <Login />
                     </Route>
                 </Switch>
+
+                <MainFooter/>
             </Router>
             
         </div>
@@ -37,5 +41,5 @@ function Homepage () {
 // ========================================
 
 const rootElement = document.getElementById("root");
-ReactDOM.render(<Homepage />, rootElement);
+ReactDOM.render(<App />, rootElement);
   
