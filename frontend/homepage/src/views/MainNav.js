@@ -4,10 +4,12 @@ import {
   } from "react-router-dom";
 
 import CategoryService, {CategoryServiceError} from "../services/category.service";
+import {TokenService} from "../services/token.service";
 
 const MainNav = () => {
     const [CategoryList, setCategoryList] = useState([]);
     const [isHover, setisHover] = useState(false);
+    let isLoggedin = !!TokenService.getToken();
     const fetchCategories = async () => {
         try {
             const response = await CategoryService.get();
