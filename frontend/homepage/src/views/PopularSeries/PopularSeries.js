@@ -1,11 +1,9 @@
 import React, { useState } from 'react';
 import ReactDOM from 'react-dom';
-import '../index.css';
 import 'swiper/css/swiper.css';
 import Swiper from 'react-id-swiper';
 import SeriesItem from './SeriesItem';
 import 'swiper/css/swiper.css';
-
 
 const PopularSeries = () => {
 

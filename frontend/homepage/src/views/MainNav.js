@@ -6,7 +6,6 @@ import {
 	Route,
 	Link
   } from "react-router-dom";
-import './index.css';
 import Login from './Login/Login';
 
 const MainNav = () => {
@@ -16,7 +15,7 @@ const MainNav = () => {
 				<div className="header-section-wrapper d-flex align-items-stretch justify-content-between">
 
 					<Link to ="/" className="logo">
-						<img src = {require('./static/images/logo/black.png')}/>
+						<img src = {require('../static/images/logo/black.png')}/>
 					</Link>
 
 					

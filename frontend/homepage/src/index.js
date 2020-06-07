@@ -1,8 +1,12 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import './index.css';
-import Login from './Login/Login';
-import MainNav from './MainNav';
+import './App.scss';
+import Login from './views/Login/Login';
+import PostList from './views/posts/PostsList';
+import MainNav from './views/MainNav';
+import HomePage from './views/HomePage';
+import MainFooter from './views/MainFooter';
+
 import {
     BrowserRouter as Router,
     Switch,
@@ -11,9 +15,12 @@ import {
     useParams,
     useRouteMatch
   } from "react-router-dom";
-import HomePage from './HomePage';
-import MainFooter from './MainFooter';
-
+import ApiService from "./services/api.service";
+import {TokenService} from "./services/token.service";
+ApiService.init(process.env.REACT_APP_API_URL);
+if(TokenService.getToken()){
+    ApiService.setHeader();
+}
 
 function App () {
     return(
@@ -24,6 +31,9 @@ function App () {
                 <Switch>
                     <Route exact path="/">
                         <HomePage />
+                    </Route>
+                    <Route path="/posts/">
+                        <PostList />
                     </Route>
 
                     <Route exact path="/login">
@@ -41,5 +51,5 @@ function App () {
 // ========================================
 
 const rootElement = document.getElementById("root");
+
 ReactDOM.render(<App />, rootElement);
-  

@@ -6,7 +6,6 @@ import {
 	Route,
 	Link
   } from "react-router-dom";
-import './index.css';
 
 const MainFooter = () => {
     return(
@@ -16,19 +15,19 @@ const MainFooter = () => {
                     <div className="col-12 col-sm-3">
                         <div className="d-block d-sm-none">
                             <div className="d-flex align-items-center justify-content-between">
-                                <img className="logo" src="/images/logo_full.png" alt=""/>
+                                <img className="logo" src="./images/logo_full.png" alt=""/>
                                 <div className="contract">
                                     <div className="d-flex justify-content-end"/>
-                                        <img src={require('./static/images/facebook.png')} alt=""/>
-                                        <img src={require('./static/images/twitter.png')} alt=""/>
-                                        <img src={require('./static/images/linkedin.png')} alt=""/>
+                                        <img src={require('../static/images/facebook.png')} alt=""/>
+                                        <img src={require('../static/images/twitter.png')} alt=""/>
+                                        <img src={require('../static/images/linkedin.png')} alt=""/>
                                     </div>
                                 </div>
                             </div>
                         </div>
                         <div className="d-none d-sm-block">
                             <div className="d-flex align-items-center justify-content-center">
-                                <img className="logo" src={require('./static/images/logo/black.png')}  alt=""/>
+                                <img className="logo" src={require('../static/images/logo/black.png')}  alt=""/>
                             </div>
                         </div>
                     </div>
@@ -141,9 +140,9 @@ const MainFooter = () => {
                             </div>
                             <div className="mt-auto p-2 contract">
                                 <div className="d-flex justify-content-end align-items-end">
-                                    <a href="#"><img className="align-self-end" src={require('./static/images/facebook.png')} alt=""/></a>
-                                    <a href="#"><img src={require('./static/images/twitter.png')} alt=""/></a>
-                                    <a href="#"><img src={require('./static/images/linkedin.png')}  alt=""/></a>
+                                    <a href="#"><img className="align-self-end" src={require('../static/images/facebook.png')} alt=""/></a>
+                                    <a href="#"><img src={require('../static/images/twitter.png')} alt=""/></a>
+                                    <a href="#"><img src={require('../static/images/linkedin.png')}  alt=""/></a>
                                 </div>
                             </div>
                         </div>
@@ -157,7 +156,7 @@ const MainFooter = () => {
 
             <div id="backToTop" style={{display: 'block'}}>
                 <div className="backtotop box-shadow">
-                    <img src="/static/images/up-arrow.svg"/>
+                    <img src="../static/images/up-arrow.svg"/>
                 </div>
             </div>
         </footer>

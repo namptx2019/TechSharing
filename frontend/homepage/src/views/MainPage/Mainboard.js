@@ -1,8 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import '../index.css';
 
-const Login = () => {
+const Mainboard = () => {
     return(
         <section className="section-block">
             <div className="container">
@@ -20,6 +19,12 @@ const Login = () => {
                         </div>
                         
                     </div>
+
+                    <div className="col-lg-6 d-none d-lg-block">
+                        <div className="right-bg">
+                            <img src={require('../static/images/thumbnail/3.png')}/>
+                        </div>
+                    </div>
                 </div>
             </div>
         </section>
@@ -27,4 +32,4 @@ const Login = () => {
     );
 }
 
-export default Login;
+export default Mainboard;

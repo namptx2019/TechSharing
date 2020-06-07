@@ -6,7 +6,6 @@ import {
 	Route,
 	Link
   } from "react-router-dom";
-import '../index.css';
 
 const PopularCategories = () => {
     return(

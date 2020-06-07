@@ -1,7 +1,5 @@
 import React, { useState } from 'react';
 import ReactDOM from 'react-dom';
-import '../index.css';
-
 
 const LeaderBoard = () => {
 
@@ -22,10 +20,10 @@ const LeaderBoard = () => {
                                     <h3 className="leader-rank">User rank</h3>
                                     <h3 className="leader-point">User score points</h3>
                                     <div className="leader-avatar">
-                                        <img src = {require('../static/images/useravatar.jpg')} alt="" className="member-avatar"/>
+                                        <img src = {require('../../static/images/useravatar.jpg')} alt="" className="member-avatar"/>
                                     </div>
                                     <div className="leader-medal">
-                                        <img src = {require('../static/images/medal.png')}/>
+                                        <img src = {require('../../static/images/medal.png')}/>
                                     </div>
                                 </div>
                             </div>
