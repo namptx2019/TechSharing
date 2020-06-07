@@ -37,7 +37,7 @@ class Post extends Model implements Transformable
         'viewed',
         'created_by',
         'updated_by',
-        'status'
+        'status',
     ];
 
     /**
@@ -84,7 +84,7 @@ class Post extends Model implements Transformable
 
     public function category()
     {
-        return $this->belongsTo(Category::class, 'category_id', 'id')->with('getParent');
+        return $this->belongsTo(Category::class, 'category_id', 'id');
     }
 
     public function lastUpdateBy()
@@ -105,11 +105,6 @@ class Post extends Model implements Transformable
     public function related()
     {
         return $this->hasMany(Post::class, 'category_id', 'category_id')->with('author');
-    }
-
-    public function favorited()
-    {
-        return $this->hasMany(Favorite::class, 'entity_id', 'id');
     }
 
     public function categoryName()

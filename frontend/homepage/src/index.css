@@ -19600,6 +19600,18 @@ footer .language select option:hover, footer .language select option:focus {
   height: 100%;
 }
 
+.loginimg {
+  width: 100%;
+  overflow: hidden;
+  height: 47.9375rem;
+}
+
+.loginimg img{
+  object-fit: cover;
+  object-position: center;
+  height: 100%;
+}
+
 .page-detail-section {
   padding-top: 6.25rem;
 }

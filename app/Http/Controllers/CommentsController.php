@@ -86,7 +86,7 @@ class CommentsController extends Controller
             ];
 
             // Emit event to increase score for user
-            event(new Scoring($request->user(), config('settings.SCORE_COMMENT_CREATE'), 'create', $comment));
+            event(new Scoring($request->user(), 5, 'create', $comment));
 
             if ($request->wantsJson()) {
 

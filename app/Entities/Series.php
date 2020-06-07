@@ -35,7 +35,6 @@ class Series extends Model implements Transformable
         'updated_by',
         'status',
         'viewed',
-        'language_id'
     ];
 
     protected $appends = ['full_path'];
@@ -65,7 +64,7 @@ class Series extends Model implements Transformable
 
     public function category()
     {
-        return $this->belongsTo(Category::class, 'category_id', 'id')->with('getParent');
+        return $this->belongsTo(Category::class, 'category_id', 'id');
     }
 
     public function lastUpdateBy(){
@@ -77,10 +76,5 @@ class Series extends Model implements Transformable
             return $this->belongsToMany(Post::class, 'series_post', 'series_id', 'post_id');
         }
         return $this->belongsToMany(Post::class, 'series_post', 'series_id', 'post_id')->orderBy('id', 'desc')->take($limit)->get();
-    }
-
-    public function language()
-    {
-        return $this->belongsTo(Lang::class, 'language_id', 'id');
     }
 }

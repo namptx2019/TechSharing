@@ -96,7 +96,7 @@ class PostsController extends Controller
             ];
 
             // Emit event to increase score for user
-            event(new Scoring($request->user(), config('settings.SCORE_POST_CREATE'), 'create', $post));
+            event(new Scoring($request->user(), 100, 'create', $post));
 
             if ($request->wantsJson()) {
 

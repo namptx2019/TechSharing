@@ -1,10 +1,4 @@
 import ApiService from './api.service'
-import { LanguageService } from './lang.service'
-import {PostServiceError} from "./post.service";
-
-const END_POINT = {
-	popular: '/public-api/series/popular'
-}
 
 /**
  * Storing error when call api
@@ -21,62 +15,126 @@ class SeriesServiceError extends Error
 }
 
 const SeriesService = {
-	/**
-	 * Get popular series by locale of application
-	 *
-	 * @return {Object}
-	 */
-	popular: async function(searchInputs = null){
-		try {
-			const response = await ApiService.get(
-				END_POINT.popular,
-				{
-					params: {
-						lang: LanguageService.getLang(),
-						search: searchInputs,
-						searchJoin: "and"
-					}
-				}
-			);
 
-			return response.data;
-		} catch(error) {
-			throw new SeriesServiceError(error.response.status, error.response.data.message);
-		}
-	},
+  /**
+   * Get series list
+   *
+   * @return { Object }
+   */
+  getList: async function(){
+    try {
+      const response = await ApiService.get('/api/series');
+      return response.data;
+    } catch(e) {
+      throw new SeriesServiceError(e.response.status, e.response.data.message);
+    }
+  },
 
-	/**
-	 * Get next page of posts
-	 *
-	 * @param {*} uri
-	 *
-	 * @return {Object}
-	 */
-	next: async function(uri){
-		try {
-			const response = await ApiService.get(uri);
+  /**
+   * Create a series
+   *
+   *
+   * @return {Object}
+   */
+  create: async function(data){
+    try {
+      const response = await ApiService.post(`/api/series/create`, data);
+      return response.data;
+    } catch(e) {
+      throw new SeriesServiceError(e.response.status, e.response.data.message);
+    }
+  },
 
-			return response.data;
-		} catch(e) {
-			throw new SeriesServiceError(e.response.status, e.response.data.message);
-		}
-	},
+  /**
+   * Get a series by id
+   *
+   * @param {*} id
+   *
+   * @return {Object}
+   */
+  get: async function(id){
+    try {
+      const response = await ApiService.get(`/api/series/${id}`);
+      return response.data;
+    } catch(e) {
+      throw new SeriesServiceError(e.response.status, e.response.data.message);
+    }
+  },
 
-	/**
-	 * Get a post by slug
-	 *
-	 * @param {*} slug
-	 *
-	 * @return {Object}
-	 */
-	get: async function(slug){
-		try {
-			const response = await ApiService.get(`/public-api/series/${slug}`);
-			return response.data;
-		} catch(e) {
-			throw new PostServiceError(e.response.status, e.response.data.message);
-		}
-	},
+  /**
+   * Edit a series
+   *
+   *
+   * @return {Object}
+   */
+  edit: async function(id,data){
+    try {
+      const response = await ApiService.post(`/api/series/edit/${id}`, data);
+      return response.data;
+    } catch(e) {
+      throw new SeriesServiceError(e.response.status, e.response.data.message);
+    }
+  },
+
+  /**
+   * Delete a series
+   *
+   *
+   * @return {Object}
+   */
+  delete: async function(id){
+    try {
+      const response = await ApiService.delete(`/api/series/delete/${id}`);
+      return response.data;
+    } catch(e) {
+      throw new SeriesServiceError(e.response.status, e.response.data.message);
+    }
+  },
+
+  /**
+   * Remove a post from series
+   *
+   *
+   * @return {Object}
+   */
+  removePost: async function(data){
+    try {
+      const response = await ApiService.post(`/api/series/remove-post/`,data);
+      return response.data;
+    } catch(e) {
+      throw new SeriesServiceError(e.response.status, e.response.data.message);
+    }
+  },
+
+  /**
+   * Add a post from series
+   *
+   *
+   * @return {Object}
+   */
+  addPost: async function(data){
+    try {
+      const response = await ApiService.post(`/api/series/add-post/`,data);
+      return response.data;
+    } catch(e) {
+      throw new SeriesServiceError(e.response.status, e.response.data.message);
+    }
+  },
+
+  /**
+   * Retrieve post list from series
+   *
+   *
+   * @return {Object}
+   */
+  getListPost: async function(id){
+    try {
+      const response = await ApiService.get(`/api/series/${id}/posts`);
+      return response.data;
+    } catch(e) {
+      throw new SeriesServiceError(e.response.status, e.response.data.message);
+    }
+  },
 }
 
 export default SeriesService;

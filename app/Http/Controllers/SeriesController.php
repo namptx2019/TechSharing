@@ -58,7 +58,7 @@ class SeriesController extends Controller
     {
         $this->repository->setPresenter(SeriesPresenter::class);
         $this->repository->pushCriteria(app('Prettus\Repository\Criteria\RequestCriteria'));
-        $series = $this->repository->with('category')->with('language')->all();
+        $series = $this->repository->with('category')->all();
         if (request()->wantsJson()) {
 
             return response()->json($series);
@@ -90,7 +90,7 @@ class SeriesController extends Controller
             ];
 
             // Emit event to increase score for user
-            event(new Scoring($request->user(), config('settings.SCORE_SERIES_CREATE'), 'create', $series));
+            event(new Scoring($request->user(), 100, 'create', $series));
 
             if ($request->wantsJson()) {
 
@@ -257,7 +257,7 @@ class SeriesController extends Controller
 
     public function getSeriesAllLanguage()
     {
-        $series = $this->repository->with('category')->with('language')->all();
+        $series = $this->repository->with('category')->all();
 
         foreach($series as $seri) {
             $temp = $this->repository->find($seri['id']);

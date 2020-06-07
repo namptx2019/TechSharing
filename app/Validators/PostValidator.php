@@ -24,7 +24,6 @@ class PostValidator extends LaravelValidator
             'thumbnail'     => 'required|file|image|dimensions:max_width=2048,max_height=2048|max:2048',
             'category_id'   => 'required|integer',
             'content'       => 'required',
-            'language_id'   => 'required|integer',
             'status'        => 'required|integer'
         ],
         ValidatorInterface::RULE_UPDATE => [
@@ -32,7 +31,6 @@ class PostValidator extends LaravelValidator
             'desc'          => 'max:255',
             'thumbnail'     => 'file|image|dimensions:max_width=2048,max_height=2048|max:2048',
             'category_id'   => 'integer',
-            'language_id'   => 'integer',
             'status'        => 'integer'
         ],
     ];

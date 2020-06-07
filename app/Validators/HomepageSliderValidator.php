@@ -24,7 +24,6 @@ class HomepageSliderValidator extends LaravelValidator
             'link'      => 'nullable|string',
             'desc'      => 'required|string',
             'status'    => 'required|integer',
-            'weight'    => 'required|integer|min:0',
         ],
         ValidatorInterface::RULE_UPDATE => [
             'title'     => 'string|max:255',
@@ -32,7 +31,6 @@ class HomepageSliderValidator extends LaravelValidator
             'link'      => 'nullable|string',
             'desc'      => 'string',
             'status'    => 'integer',
-            'weight'    => 'required|integer|min:0',
         ],
     ];
 }
