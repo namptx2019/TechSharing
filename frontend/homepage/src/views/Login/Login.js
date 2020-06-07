@@ -12,7 +12,6 @@ const Login = () => {
     };
     const handleSubmit = async (data) => {
         try {
-            console.log(data);
             const response = await UserService.login(data);
             window.location.href = '/';
         } catch(e) {

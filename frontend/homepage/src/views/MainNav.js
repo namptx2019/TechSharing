@@ -32,10 +32,10 @@ const MainNav = () => {
 										</div>
 									</li>
 									<li>
-										<Link className="nav-item" style={{color:'black'}}>Series</Link>
+										<Link className="nav-item" to ="/series" style={{color:'black'}}>Series</Link>
 									</li>
 									<li>
-										<Link className="nav-item" style={{color:'black'}}>Posts</Link>
+										<Link className="nav-item" to ="/posts" style={{color:'black'}}>Posts</Link>
 									</li>
 									<li>
 										<Link to ="/login">

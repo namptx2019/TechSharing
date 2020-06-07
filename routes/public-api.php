@@ -14,7 +14,7 @@ Route::group(['prefix' => 'posts'], function(){
 });
 
 Route::group(['prefix' => 'series'], function () {
-    Route::get('popular', 'SeriesController@getSeriesByLocale')->name('pubApi.series.popular');
+    Route::get('popular', 'SeriesController@getSeriesAllLanguage')->name('pubApi.series.popular');
     Route::get('/{seriesSlug}', 'SeriesController@getDetailsSlug')->name('pubApi.series.getSlug');
 });
 

@@ -3,7 +3,9 @@ import ReactDOM from 'react-dom';
 import './App.scss';
 import Login from './views/Login/Login';
 import PostList from './views/posts/PostsList';
+import SeriesList from './views/Series/SeriesList';
 import PostDetails from './views/posts/PostDetails';
+import SeriesDetails from './views/Series/SeriesDetails';
 import MainNav from './views/MainNav';
 import HomePage from './views/HomePage';
 import MainFooter from './views/MainFooter';
@@ -40,6 +42,12 @@ function App () {
                         <PostDetails />
                     </Route>
 
+                    <Route exact path="/series/">
+                        <SeriesList />
+                    </Route>
+                    <Route path="/series/:slug">
+                        <SeriesDetails />
+                    </Route>
                     <Route exact path="/login">
                         <Login />
                     </Route>
