@@ -16,19 +16,20 @@ const MainFooter = () => {
                     <div className="col-12 col-sm-3">
                         <div className="d-block d-sm-none">
                             <div className="d-flex align-items-center justify-content-between">
-                                <img className="logo" src="/images/logo_full.png" alt=""/>
+                                <img className="logo" src={require('./static/images/logo/white.png')}  alt=""/>
                                 <div className="contract">
-                                    <div className="d-flex justify-content-end"/>
+                                    <div className="d-flex justify-content-end">
                                         <img src={require('./static/images/facebook.png')} alt=""/>
                                         <img src={require('./static/images/twitter.png')} alt=""/>
                                         <img src={require('./static/images/linkedin.png')} alt=""/>
                                     </div>
                                 </div>
                             </div>
+                           
                         </div>
                         <div className="d-none d-sm-block">
                             <div className="d-flex align-items-center justify-content-center">
-                                <img className="logo" src={require('./static/images/logo/black.png')}  alt=""/>
+                                <img className="logo" src={require('./static/images/logo/white.png')}  alt=""/>
                             </div>
                         </div>
                     </div>
@@ -151,13 +152,14 @@ const MainFooter = () => {
                 </div>
             
 
-            <div className="copy-right d-flex align-items-center justify-content-center">
-                Copyright
-            </div>
+                <div className="copy-right d-flex align-items-center justify-content-center">
+                    Copyright
+                </div>
 
-            <div id="backToTop" style={{display: 'block'}}>
-                <div className="backtotop box-shadow">
-                    <img src="/static/images/up-arrow.svg"/>
+                <div id="backToTop" style={{display: 'block'}}>
+                    <div className="backtotop box-shadow">
+                        <img src={require('./static/images/up-arrow.svg')}/>
+                    </div>
                 </div>
             </div>
         </footer>
