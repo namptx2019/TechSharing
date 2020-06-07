@@ -6,7 +6,6 @@ import {
 	Route,
 	Link
   } from "react-router-dom";
-import Login from './Login/Login';
 
 const MainNav = () => {
     return(
@@ -38,13 +37,6 @@ const MainNav = () => {
 									<li>
 										<Link className="nav-item" style={{color:'black'}}>Posts</Link>
 									</li>
-									<li>
-										<Link className="nav-item" style={{color:'black'}}>Contests</Link>
-									</li>
-									<li>
-										<Link className="nav-item" style={{color:'black'}}>Test and Get Hired</Link>
-									</li>
-
 									<li>
 										<Link to ="/login">
 											<button className="btn nav-button btn-danger">Login</button>

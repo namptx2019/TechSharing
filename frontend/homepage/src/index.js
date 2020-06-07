@@ -3,6 +3,7 @@ import ReactDOM from 'react-dom';
 import './App.scss';
 import Login from './views/Login/Login';
 import PostList from './views/posts/PostsList';
+import PostDetails from './views/posts/PostDetails';
 import MainNav from './views/MainNav';
 import HomePage from './views/HomePage';
 import MainFooter from './views/MainFooter';
@@ -32,8 +33,11 @@ function App () {
                     <Route exact path="/">
                         <HomePage />
                     </Route>
-                    <Route path="/posts/">
+                    <Route exact path="/posts/">
                         <PostList />
+                    </Route>
+                    <Route path="/posts/:slug">
+                        <PostDetails />
                     </Route>
 
                     <Route exact path="/login">

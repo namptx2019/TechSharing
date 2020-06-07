@@ -20,11 +20,7 @@ const CategoryService = {
      */
     get: async function(){
         try {
-            const response = await ApiService.get('/public-api/categories/', {
-                params: {
-                    lang: LanguageService.getLang(),
-                }
-            });
+            const response = await ApiService.get('/public-api/categories/');
 
             return response.data;
         } catch(e) {
@@ -41,11 +37,7 @@ const CategoryService = {
      */
     getSpecific: async function(slug){
         try {
-            const response = await ApiService.get(`/public-api/categories/get/${slug}`, {
-                params: {
-                    lang: LanguageService.getLang(),
-                }
-            });
+            const response = await ApiService.get(`/public-api/categories/get/${slug}`);
 
             return response.data;
         } catch(e) {
@@ -53,45 +45,6 @@ const CategoryService = {
         }
     },
 
-    /**
-     * Get all hierarchy categories
-     *
-     * @return { Object }
-     */
-    getHierarchy: async function(searchInputs = null){
-        try {
-            const response = await ApiService.get('/public-api/categories/hierarchy', {
-                params: {
-                    lang: LanguageService.getLang(),
-                    search: searchInputs,
-                    searchJoin: "and"
-                }
-            });
-
-            return response.data;
-        } catch(e) {
-            throw new CategoryServiceError(e.response.status, e.response.data.message);
-        }
-    },
-
-     /**
-     * Get hierarchy only header categories
-     *
-     * @return { Object }
-     */
-    getHeaderHierarchy: async function(){
-        try {
-            const response = await ApiService.get('/public-api/categories/header', {
-                params: {
-                    lang: LanguageService.getLang(),
-                }
-            });
-
-            return response.data;
-        } catch(e) {
-            throw new CategoryServiceError(e.response.status, e.response.data.message);
-        }
-    },
 
      /**
      * Get popular categories
@@ -100,11 +53,7 @@ const CategoryService = {
      */
     getPopular: async function(){
         try {
-            const response = await ApiService.get('/public-api/categories/popular', {
-                params: {
-                    lang: LanguageService.getLang(),
-                }
-            });
+            const response = await ApiService.get('/public-api/categories/popular');
 
             return response.data;
         } catch(e) {

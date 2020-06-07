@@ -1,6 +1,5 @@
 import ApiService from './api.service'
 import { TokenService } from './token.service'
-import router from '@/router'
 
 class AuthenticationError extends Error {
     constructor(errorCode, message) {
@@ -23,35 +22,31 @@ class UserServiceError extends Error {
 const UserService = {
     /**
      * Login user and save access token to TokenService
-     * @param email
-     * @param password
+     * @param data
      *
      * @return access_token
      * @throw AuthenticationError
      */
-    login: async function(email, password){
+    login: async function(data){
         const requestData = {
             method: 'post',
             url: '/oauth/token',
             data: {
                 grant_type: 'password',
-                username: email,
-                password: password,
-                client_id: process.env.CLIENT_ID,
-                client_secret: process.env.CLIENT_SECRET,
+                username: data.email,
+                password: data.password,
+                client_id: 2,
+                client_secret: 'CYcXfaYHM84OM2x41inQeNHVK0dPOhT3IO5ovuFw',
                 scope: '*'
             }
         }
 
         try {
             const response = await ApiService.customRequest(requestData);
-
             TokenService.saveToken(response.data.access_token);
             ApiService.setHeader();
-
             return response.data.access_token;
         } catch (error) {
-
             throw new AuthenticationError(error.response.status, error.response.data.message);
         }
     },
@@ -72,8 +67,8 @@ const UserService = {
             const response = await ApiService.get('/public-api/user/me');
 
             return response.data;
-        } catch(e) {
-            throw new UserServiceError(e.response.status, e.response.data.message);
+        } catch(error) {
+            throw new UserServiceError(error.response.status, error.response.data.message);
         }
     },
 
@@ -96,7 +91,7 @@ const UserService = {
 
             return response.data
         } catch(error) {
-            throw new UserServiceError(e.response.status, e.response.data.message);
+            throw new UserServiceError(error.response.status, error.response.data.message);
         }
     },
 

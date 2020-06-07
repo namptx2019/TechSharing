@@ -5,11 +5,18 @@ import {
     PaginationItem,
     PaginationLink,
 } from 'reactstrap';
+import Select from 'react-select';
 import PostService, {PostServiceError} from "../../services/post.service";
-
+import CategoryService, {CategoryServiceError} from "../../services/category.service";
 const PostList = () => {
 
     const [PostList, setPostList] = useState([]);
+    const [CategoryList, setCategoryList] = useState([
+        {
+            id: 0,
+            text: 'All Categories'
+        }
+    ]);
     const [filters, setFilters] = useState({
         category: 0,
         search: '',
@@ -31,6 +38,18 @@ const PostList = () => {
         }
     }
 
+    const fetchCategories = async () => {
+        try {
+            const response = await CategoryService.get();
+            setCategoryList(response.data);
+            return response;
+        } catch(e) {
+            if(e instanceof CategoryServiceError){
+
+            }
+        }
+    }
+
     const limitStr = (input, limit) => {
         if(input.length > limit){
         return input = input.substr(0, limit)+" ...";
@@ -39,15 +58,21 @@ const PostList = () => {
     }
 
     const searchPost = (event) => {
-        const { name, value } = event.target;
-        filters[name] = value;
-        console.log(filters);
+        if(event){
+            const { name, value } = event.target;
+            filters[name] = value;
+        }
         if(filters.category != 0){
             filters.search = "name:"+filters.name+";category_id:"+filters.category;
         } else {
             filters.search = "name:"+filters.name;
         }
         fetchPosts(filters.search);
+    }
+
+    const handleSelect = (selection, action) => {
+        filters.category = selection.id;
+        searchPost();
     }
 
     const handlePageClick = (e, index) => {
@@ -57,6 +82,7 @@ const PostList = () => {
 
     useEffect(() => {
         fetchPosts();
+        fetchCategories();
     },[]);
 
     return(
@@ -69,10 +95,17 @@ const PostList = () => {
                                 <div className="row align-items-center justify-content-between">
                                     <div className="col-1 d-inline search-icon"><span className="icon-enter-search"></span></div>
                                     <div className="d-inline col-5 input-search">
-                                        <input  type="text" className="inp-search" name="name" onChange={(e) =>searchPost(e)}/>
+                                        <input type="text" className="inp-search" name="name" onChange={(e) =>searchPost(e)}/>
                                     </div>
                                     <div className="d-inline col-5">
-                                        {/*<select2  name="category" className="slt-category select-2" :options="cates" @change="searching()"/>*/}
+                                        <Select
+                                            name="text"
+                                            onChange={(selection, action) => handleSelect(selection, action)}
+                                            options={CategoryList}
+                                            value={CategoryList.id}
+                                            getOptionLabel={(CategoryList)=>CategoryList.name}
+                                            getOptionValue={(CategoryList)=>CategoryList.id}
+                                        />
                                 </div>
                             </div>
                         </div>
