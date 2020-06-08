@@ -369,7 +369,7 @@ UsersController extends Controller
      */
     public function getUserByUuid($uuid)
     {
-        $user = $this->repository->findByField('uuid', $uuid)->first();
+        $user = $this->repository->findByField('uuid', $uuid)->load('avatars')->first();
 
         if (request()->wantsJson()) {
 
