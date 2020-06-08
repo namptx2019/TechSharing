@@ -24,7 +24,6 @@ const UserProfile = () => {
 
     const fetchUser = async () => {
         try{
-            debugger;
             const response = await UserService.getUserInfo();
             setUser(response.data);
         }
@@ -46,42 +45,25 @@ const UserProfile = () => {
                             <div className="general-info-resume d-flex flex-xl-column justify-content-start align-items-start">
                                 <div className="general-info-resume-ava">
                                     <div className="thumb">
-                                        { User.avatars.length != 0  && <img src={User.avatars} DEFAULT_AVATAR  alt='avatar'/>}
-                                        { User.avatars.length == 0 && <img src={require('../../static/images/default-avatar.png')} DEFAULT_AVATAR  alt='avatar'/>}
+                                        { User.avatars.length != 0  && <img src={User.avatars}   alt='avatar'/>}
+                                        { User.avatars.length == 0 && <img src={require('../../static/images/default-avatar.png')}   alt='avatar'/>}
                                     </div>
                                 </div>
                                 <div className="general-info-resume-intro">
-                                    <h1 className="username">{User.username}</h1>
-                                    <p className="status" title="entry">User Entry</p>
-                                    <Link tag="a" to ='/editprofile' className="btn btn-sm btn-info" >
+                                    <h1 className="username">{User.username}</h1>                                
+                                    <Link tag="a" to ='/edit-profile' className="btn btn-sm btn-info" >
                                         Edit
                                     </Link>
 
                                 </div>
                             </div>
-                            <div className="general-info-reaction d-flex justify-content-between align-items-center">
-                                <div className="general-info-reaction-item">
-                                    <div className="general-info-reaction-item-title">
-                                        Ranking
-                                    </div>
-                                    <div className="general-info-reaction-item-content">
-                                        <img className="medal" src={require('../../static/images/medal.png')} alt="medal-platinum"/> Platinum
-                                    </div>
-                                </div>
-                                <div className="general-info-reaction-item">
-                                    <div className="general-info-reaction-item-title">
-                                        Favorites
-                                    </div>
-                                    <div className="general-info-reaction-item-content">
-                                        1100
-                                    </div>
-                                </div>
+                            <div className="general-info-reaction text-center">
                                 <div className="general-info-reaction-item">
                                     <div className="general-info-reaction-item-title">
                                         Score
                                     </div>
                                     <div className="general-info-reaction-item-content">
-                                        User score
+                                    {User.score}
                                     </div>
                                 </div>
                             </div>

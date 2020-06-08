@@ -140,7 +140,7 @@ const MainNav = () => {
                                                                 </Link>
                                                             </li>
                                                             <li>
-                                                                <Link to={'/profile/me'} tag="a">
+                                                                <Link to={'/edit-profile'} tag="a">
                                                                     <i className="icon-enter-edit mr-2"></i>Edit profile
                                                                 </Link>
                                                             </li>

@@ -78,10 +78,9 @@ function App () {
                         <OtherUser />
                     </Route>
 
-                    <Route path="/editprofile">
+                    <Route path="/edit-profile">
                         <EditProfile />
                     </Route>
-                    
                     <Route path="/profile/activities">
                         <ActivitiesLog />
                     </Route>

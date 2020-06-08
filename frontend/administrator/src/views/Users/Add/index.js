@@ -121,7 +121,6 @@ const UserForm  = props => {
     if (User.avatars?.name) {
       formData.append('avatar', User.avatars);
     }
-    formData.append('email', User.email);
     formData.append('role_id', User.role_id);
     formData.append('gender', User.gender);
     formData.append('phone', User.phone);
@@ -334,7 +333,7 @@ const UserForm  = props => {
                     <Label htmlFor="email-input">Email</Label>
                   </Col>
                   <Col xs="12" md="9">
-                    <Input type="text" id="email-input" defaultValue={User.email} name="email" onChange={(e) => handleChange(e)}/>
+                    <Input type="text" id="email-input" placeholder={User.email} name="email" disabled/>
                   </Col>
                 </FormGroup>
                 <FormGroup row>

@@ -43,23 +43,7 @@ const OtherUser = () => {
 
                                 </div>
                             </div>
-                            <div className="general-info-reaction d-flex justify-content-between align-items-center">
-                                <div className="general-info-reaction-item">
-                                    <div className="general-info-reaction-item-title">
-                                        Ranking
-                                    </div>
-                                    <div className="general-info-reaction-item-content">
-                                        <img className="medal" src={require('../../static/images/medal.png')} alt="medal-platinum"/> Platinum
-                                    </div>
-                                </div>
-                                <div className="general-info-reaction-item">
-                                    <div className="general-info-reaction-item-title">
-                                        Favorites
-                                    </div>
-                                    <div className="general-info-reaction-item-content">
-                                        1100
-                                    </div>
-                                </div>
+                            <div className="general-info-reaction text-center">
                                 <div className="general-info-reaction-item">
                                     <div className="general-info-reaction-item-title">
                                         Score
@@ -92,7 +76,6 @@ const OtherUser = () => {
                                     <span className="field-value">{User.email}</span>
                                 </div>
                             </div>
-                            <hr v-if="user.display_settings.email"/>
 
 
                             <div className="row">
@@ -107,7 +90,7 @@ const OtherUser = () => {
                             </div>
                             <hr/>
 
-                            <div className="row" v-if="user.display_settings.phone">
+                            <div className="row">
                                 <div className="col-4">
                                     <span className="text-field">Phone number</span>
                                 </div>
@@ -115,9 +98,9 @@ const OtherUser = () => {
                                     <span className="field-value">{User.phone}</span>
                                 </div>
                             </div>
-                            <hr v-if="user.display_settings.phone"/>
+                            <hr/>
 
-                            <div className="row" v-if="user.display_settings.date_of_birth">
+                            <div className="row">
                                 <div className="col-4">
                                     <span className="text-field">Day of birth</span>
                                 </div>
@@ -125,7 +108,7 @@ const OtherUser = () => {
                                     <span className="field-value">{User.date_of_birth}</span>
                                 </div>
                             </div>
-                            <hr v-if="user.display_settings.date_of_birth"/>
+                            <hr/>
 
 
                             <div className="row">
