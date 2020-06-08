@@ -11,15 +11,22 @@ import UserService, { UserServiceError } from "../../services/user.service";
 
 
 const UserProfile = () => {
-    const [User, setUser] = useState({});
-    let a;
-
+    const [User, setUser] = useState({
+        username: '',
+        email: '',
+        role_id: 2,
+        avatars: [],
+        phone: '',
+        gender: 1,
+        working_place: '',
+        date_of_birth: ''
+      });
+      
     const fetchUser = async () => {
         try{
             debugger;
             const response = await UserService.getUserInfo();
             setUser(response.data);
-            a = User.avatars;
         }
         catch(e){
             alert('Exception detail:' + e);
@@ -39,13 +46,14 @@ const UserProfile = () => {
                             <div className="general-info-resume d-flex flex-xl-column justify-content-start align-items-start">
                                 <div className="general-info-resume-ava">
                                     <div className="thumb">
-                                        <img src={User.avatars} DEFAULT_AVATAR  alt='avatar'/>
+                                        { User.avatars.length != 0  && <img src={User.avatars} DEFAULT_AVATAR  alt='avatar'/>}
+                                        { User.avatars.length == 0 && <img src={require('../../static/images/default-avatar.png')} DEFAULT_AVATAR  alt='avatar'/>}
                                     </div>
                                 </div>
                                 <div className="general-info-resume-intro">
                                     <h1 className="username">{User.username}</h1>
                                     <p className="status" title="entry" v-if="user.entry">User Entry</p>
-                                    <Link tag="a" className="btn btn-sm btn-info" >
+                                    <Link tag="a" to ='/EditProfile' className="btn btn-sm btn-info" >
                                         Edit
                                     </Link>
 
@@ -115,7 +123,7 @@ const UserProfile = () => {
                             </div>
                             <hr/>
 
-                            <div className="row" v-if="user.display_settings.phone">
+                            <div className="row">
                                 <div className="col-4">
                                     <span className="text-field">Phone number</span>
                                 </div>
@@ -123,9 +131,9 @@ const UserProfile = () => {
                                     <span className="field-value">{User.phone}</span>
                                 </div>
                             </div>
-                            <hr v-if="user.display_settings.phone"/>
+                            <hr/>
 
-                            <div className="row" v-if="user.display_settings.date_of_birth">
+                            <div className="row" >
                                 <div className="col-4">
                                     <span className="text-field">Day of birth</span>
                                 </div>
@@ -133,7 +141,7 @@ const UserProfile = () => {
                                     <span className="field-value">{User.date_of_birth}</span>
                                 </div>
                             </div>
-                            <hr v-if="user.display_settings.date_of_birth"/>
+                            <hr />
 
 
                             <div className="row">

@@ -26,6 +26,7 @@ import {TokenService} from "./services/token.service";
 import UserProfile from './views/UserProfile/UserProfile';
 import Register from './views/Register/Register';
 import OtherUser from './views/UserProfile/OtherUser';
+import EditProfile from './views/UserProfile/UserProfileEdit';
 ApiService.init(process.env.REACT_APP_API_URL);
 if(TokenService.getToken()){
     ApiService.setHeader();
@@ -74,6 +75,10 @@ function App () {
 
                     <Route path="/profile/show/:slug">
                         <OtherUser />
+                    </Route>
+
+                    <Route path="/EditProfile">
+                        <EditProfile />
                     </Route>
 
                     {!isLoggedin ? <Redirect to="/posts/" /> :

@@ -12,7 +12,6 @@ const OtherUser = () => {
 
     const fetchUser = async (slug) => {
         try{
-            debugger;
             const response = await UserService.getUserByUuid(slug);
             setUser(response.data);
         }
@@ -34,7 +33,8 @@ const OtherUser = () => {
                             <div className="general-info-resume d-flex flex-xl-column justify-content-start align-items-start">
                                 <div className="general-info-resume-ava">
                                     <div className="thumb">
-                                        <img src={User.avatars} DEFAULT_AVATAR  alt='avatar'/>
+                                        { User.avatars.length != 0  && <img src={User.avatars} DEFAULT_AVATAR  alt='avatar'/>}
+                                        { User.avatars.length == 0 && <img src={require('../../static/images/default-avatar.png')} DEFAULT_AVATAR  alt='avatar'/>}
                                     </div>
                                 </div>
                                 <div className="general-info-resume-intro">
