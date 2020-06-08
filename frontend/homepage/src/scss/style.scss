@@ -1,0 +1,17 @@
+// If you want to override variables do it here
+@import "variables";
+
+// If you want to add something do it here
+@import "custom";
+
+// ie fixes
+@import "ie-fix";
+
+//main css
+@import "main";
+
+// Import style Function  for this application
+@import 'function';
+
+// Import css for post
+@import 'Posts';

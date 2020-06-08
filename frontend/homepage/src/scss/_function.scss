@@ -1,0 +1,19 @@
+@function get-vw-mobile($target) {
+    $vw-context: (480*.01);
+    @return ($target/$vw-context) * 1vw;
+}
+
+@function get-vw-tablet($target) {
+    $vw-context: (768*.01);
+    @return ($target/$vw-context) * 1vw;
+}
+
+@function get-vw-desktop($target) {
+    $vw-context: (1440*.01);
+    @return ($target/$vw-context) * 1vw;
+}
+
+@function get-rem($size) {
+    $remSize: $size / $fs-default;
+    @return #{$remSize}rem;
+}
