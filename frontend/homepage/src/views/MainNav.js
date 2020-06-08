@@ -111,6 +111,16 @@ const MainNav = () => {
                                     {
                                         isLoggedin &&
                                         <li>
+                                            <Link to ="/post/add" style={{paddingRight: '2.5rem'}}>
+                                                <button className="btn nav-button btn-success" >Add post</button>
+                                            </Link>
+                                        </li>
+                                    }
+
+                                    {
+                                        isLoggedin &&
+
+                                        <li>
                                             <div className="user-avatar profile-avatar" onMouseOver={() => setDropdown(true)}>
                                                 {
                                                     Current && Current.avatars &&
