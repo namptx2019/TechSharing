@@ -1,31 +1,18 @@
 import React, { useState, useEffect } from 'react';
 import ReactDOM from 'react-dom';
+import { Link, useParams } from "react-router-dom";
 import '../../index.css';
-import {
-	BrowserRouter as Router,
-	Switch,
-	Route,
-	Link
-  } from "react-router-dom";
 import UserService, { UserServiceError } from "../../services/user.service";
 
 
-const UserProfile = () => {
-    const [User, setUser] = useState({
-        username: '',
-        email: '',
-        role_id: 2,
-        avatars: [],
-        phone: '',
-        gender: 1,
-        working_place: '',
-        date_of_birth: ''
-      });
-      
-    const fetchUser = async () => {
+const OtherUser = () => {
+    let params = useParams();
+
+    const [User, setUser] = useState({});
+
+    const fetchUser = async (slug) => {
         try{
-            debugger;
-            const response = await UserService.getUserInfo();
+            const response = await UserService.getUserByUuid(slug);
             setUser(response.data);
         }
         catch(e){
@@ -34,8 +21,8 @@ const UserProfile = () => {
     }
 
     useEffect(() => {
-        fetchUser();
-      },[]);
+        fetchUser(params.slug);
+      },[params.slug]);
 
     return(
         <div className="profile-info page-padding" v-if="user !== null">
@@ -53,9 +40,6 @@ const UserProfile = () => {
                                 <div className="general-info-resume-intro">
                                     <h1 className="username">{User.username}</h1>
                                     <p className="status" title="entry" v-if="user.entry">User Entry</p>
-                                    <Link tag="a" to ='/EditProfile' className="btn btn-sm btn-info" >
-                                        Edit
-                                    </Link>
 
                                 </div>
                             </div>
@@ -123,7 +107,7 @@ const UserProfile = () => {
                             </div>
                             <hr/>
 
-                            <div className="row">
+                            <div className="row" v-if="user.display_settings.phone">
                                 <div className="col-4">
                                     <span className="text-field">Phone number</span>
                                 </div>
@@ -131,9 +115,9 @@ const UserProfile = () => {
                                     <span className="field-value">{User.phone}</span>
                                 </div>
                             </div>
-                            <hr/>
+                            <hr v-if="user.display_settings.phone"/>
 
-                            <div className="row" >
+                            <div className="row" v-if="user.display_settings.date_of_birth">
                                 <div className="col-4">
                                     <span className="text-field">Day of birth</span>
                                 </div>
@@ -141,7 +125,7 @@ const UserProfile = () => {
                                     <span className="field-value">{User.date_of_birth}</span>
                                 </div>
                             </div>
-                            <hr />
+                            <hr v-if="user.display_settings.date_of_birth"/>
 
 
                             <div className="row">
@@ -163,4 +147,4 @@ const UserProfile = () => {
     );
 }
 
-export default UserProfile;
+export default OtherUser;
