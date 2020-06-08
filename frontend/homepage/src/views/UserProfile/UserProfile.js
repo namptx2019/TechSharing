@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import ReactDOM from 'react-dom';
 import '../../index.css';
 import {
@@ -7,8 +7,29 @@ import {
 	Route,
 	Link
   } from "react-router-dom";
+import UserService, { UserServiceError } from "../../services/user.service";
+
 
 const UserProfile = () => {
+    const [User, setUser] = useState({});
+    let a;
+
+    const fetchUser = async () => {
+        try{
+            debugger;
+            const response = await UserService.getUserInfo();
+            setUser(response.data);
+            a = User.avatars;
+        }
+        catch(e){
+            alert('Exception detail:' + e);
+        }
+    }
+
+    useEffect(() => {
+        fetchUser();
+      },[]);
+
     return(
         <div className="profile-info page-padding" v-if="user !== null">
             <div className="container">
@@ -18,11 +39,11 @@ const UserProfile = () => {
                             <div className="general-info-resume d-flex flex-xl-column justify-content-start align-items-start">
                                 <div className="general-info-resume-ava">
                                     <div className="thumb">
-                                        <img src={require('../../static/images/useravatar.jpg')} DEFAULT_AVATAR  alt='avatar'/>
+                                        <img src={User.avatars} DEFAULT_AVATAR  alt='avatar'/>
                                     </div>
                                 </div>
                                 <div className="general-info-resume-intro">
-                                    <h1 className="username">User Name</h1>
+                                    <h1 className="username">{User.username}</h1>
                                     <p className="status" title="entry" v-if="user.entry">User Entry</p>
                                     <Link tag="a" className="btn btn-sm btn-info" >
                                         Edit
@@ -66,7 +87,7 @@ const UserProfile = () => {
                                     <span className="text-field">User name</span>
                                 </div>
                                 <div className="col-8">
-                                    <span className="field-value">Username</span>
+                                    <span className="field-value">{User.username}</span>
                                 </div>
                             </div>
                             <hr/>
@@ -76,7 +97,7 @@ const UserProfile = () => {
                                     <span className="text-field">Email</span>
                                 </div>
                                 <div className="col-8">
-                                    <span className="field-value">email</span>
+                                    <span className="field-value">{User.email}</span>
                                 </div>
                             </div>
                             <hr v-if="user.display_settings.email"/>
@@ -84,12 +105,12 @@ const UserProfile = () => {
 
                             <div className="row">
                                 <div className="col-4">
-                                    <span className="text-field">gender</span>
+                                    <span className="text-field">Gender</span>
                                 </div>
                                 <div className="col-8">
-                                    <span className="field-value" v-if="user.gender === 0">Male</span>
-                                    <span className="field-value" v-if="user.gender === 1">Female</span>
-                                    <span className="field-value" v-if="user.gender === 2">Other</span>
+                                    {User.gender === 0 && <span className="field-value">Male</span>}
+                                    {User.gender === 1 && <span className="field-value">Female</span>}
+                                    {User.gender === 2 && <span className="field-value">Other</span>}
                                 </div>
                             </div>
                             <hr/>
@@ -99,7 +120,7 @@ const UserProfile = () => {
                                     <span className="text-field">Phone number</span>
                                 </div>
                                 <div className="col-8">
-                                    <span className="field-value">Phone</span>
+                                    <span className="field-value">{User.phone}</span>
                                 </div>
                             </div>
                             <hr v-if="user.display_settings.phone"/>
@@ -109,7 +130,7 @@ const UserProfile = () => {
                                     <span className="text-field">Day of birth</span>
                                 </div>
                                 <div className="col-8">
-                                    <span className="field-value">user_day_of_birth</span>
+                                    <span className="field-value">{User.date_of_birth}</span>
                                 </div>
                             </div>
                             <hr v-if="user.display_settings.date_of_birth"/>
@@ -120,7 +141,7 @@ const UserProfile = () => {
                                     <span className="text-field">Working place</span>
                                 </div>
                                 <div className="col-8">
-                                    <span className="field-value text">user.working_place</span>
+                                    <span className="field-value text">{User.working_place}</span>
                                 </div>
                             </div>
                             <hr/>
@@ -130,7 +151,7 @@ const UserProfile = () => {
                                     <span className="text-field">Facebook</span>
                                 </div>
                                 <div className="col-8">
-                                    <span className="field-value text">user.facebook</span>
+                                    <span className="field-value text">{User.facebook}</span>
                                 </div>
                             </div>
                             <hr v-if="user.display_settings.facebook"/>
@@ -142,7 +163,7 @@ const UserProfile = () => {
                                     <span className="text-field">Skype</span>
                                 </div>
                                 <div className="col-8">
-                                    <span className="field-value text">user.skype</span>
+                                    <span className="field-value text">{User.skype}</span>
                                 </div>
                             </div>
                             <hr v-if="user.display_settings.skype"/>
@@ -152,7 +173,7 @@ const UserProfile = () => {
                                     <span className="text-field">Twitter</span>
                                 </div>
                                 <div className="col-8">
-                                    <span className="field-value text">user.twitter</span>
+                                    <span className="field-value text">{User.twitter}</span>
                                 </div>
                             </div>
                             <hr v-if="user.display_settings.twitter"/>
@@ -162,7 +183,7 @@ const UserProfile = () => {
                                     <span className="text-field">Linkedin</span>
                                 </div>
                                 <div className="col-8">
-                                    <span className="field-value text">user.linkedin</span>
+                                    <span className="field-value text">{User.linkedin}</span>
                                 </div>
                             </div>
                             <hr v-if="user.display_settings.linkedin"/>
@@ -173,7 +194,7 @@ const UserProfile = () => {
                                     <span className="text-field">Timezone</span>
                                 </div>
                                 <div className="col-8">
-                                    <span className="field-value text">user.location</span>
+                                    <span className="field-value text">{User.location}</span>
                                 </div>
                             </div>
 

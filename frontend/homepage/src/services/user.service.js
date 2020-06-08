@@ -36,7 +36,7 @@ const UserService = {
                 username: data.email,
                 password: data.password,
                 client_id: 2,
-                client_secret: 'CYcXfaYHM84OM2x41inQeNHVK0dPOhT3IO5ovuFw',
+                client_secret: 'Tc9G95r1IxNIJZQI4Le9wJiEtsmm5jJOGxK6JrBO',
                 scope: '*'
             }
         }

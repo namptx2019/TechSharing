@@ -13,7 +13,8 @@ const Login = () => {
     const handleSubmit = async (data) => {
         try {
             const response = await UserService.login(data);
-            window.location.href = '/';
+            window.location.href = '/';  
+            console.log('abcxyz');
         } catch(e) {
             if(e instanceof UserServiceError){
                 setError(e)
