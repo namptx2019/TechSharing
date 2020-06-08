@@ -200,3 +200,20 @@
         }
     }
 }
+
+#AddPost{
+    .title{
+        font-size: 2rem;
+        text-transform: uppercase;
+        color: #4F4F4F;
+        margin-bottom: 1.5625rem;
+        text-align: center;
+        font-weight: 500;
+    }
+    .btn-group-form{
+        float: right;
+    }
+    .required{
+        color: red;
+    }
+}

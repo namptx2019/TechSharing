@@ -60,9 +60,6 @@ const PopularCategories = () => {
                             )}
                         </div>
                     </div>
-                    <div className="view-more">
-                        <Link tag="a" to="/category"><button className="btn btn-info">View more</button></Link>
-                    </div>
                 </div>
             </div>
         </section>

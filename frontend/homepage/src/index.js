@@ -2,10 +2,12 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import './App.scss';
 import Login from './views/Login/Login';
-import PostList from './views/posts/PostsList';
+import PostList from './views/Posts/PostsList';
+import PostDetails from './views/Posts/PostDetails';
+import PostAdd from './views/Posts/AddPost';
 import SeriesList from './views/Series/SeriesList';
-import PostDetails from './views/posts/PostDetails';
 import SeriesDetails from './views/Series/SeriesDetails';
+import CategoryDetails from './views/Category/CategoryDetails';
 import MainNav from './views/MainNav';
 import HomePage from './views/HomePage';
 import MainFooter from './views/MainFooter';
@@ -14,6 +16,7 @@ import {
     BrowserRouter as Router,
     Switch,
     Route,
+    Redirect,
     Link,
     useParams,
     useRouteMatch
@@ -28,6 +31,7 @@ if(TokenService.getToken()){
 }
 
 function App () {
+    let isLoggedin = !!TokenService.getToken();
     return(
         <div>
             <Router>
@@ -44,6 +48,14 @@ function App () {
                         <PostDetails />
                     </Route>
 
+                    {!isLoggedin ? <Redirect to="/posts/" /> :
+                        <Route exact path="/post/add">
+                            <PostAdd />
+                        </Route>
+                    }
+                    <Route path="/category/:slug">
+                        <CategoryDetails />
+                    </Route>
                     <Route exact path="/series/">
                         <SeriesList />
                     </Route>

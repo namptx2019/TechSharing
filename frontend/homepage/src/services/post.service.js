@@ -64,7 +64,22 @@ const PostService = {
 		} catch(e) {
 			throw new PostServiceError(e.response.status, e.response.data.message);
 		}
-	}
+	},
+
+	/**
+	 * Create a post
+	 *
+	 *
+	 * @return {Object}
+	 */
+	create: async function(data){
+		try {
+			const response = await ApiService.post(`/api/post/create`, data);
+			return response.data;
+		} catch(e) {
+			throw new PostServiceError(e.response.status, e.response.data.message);
+		}
+	},
 }
 
 export default PostService;

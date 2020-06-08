@@ -16883,14 +16883,7 @@ footer .language select option:hover, footer .language select option:focus {
   margin-right: 10px;
 }
 
-.page-posts {
-  padding-top: 6.25rem;
-}
-@media screen and (min-width: 1280px) {
-  .page-posts {
-    padding-top: 5.625rem;
-  }
-}
+
 
 .post-filter {
   margin-top: 1.875rem;
@@ -17130,14 +17123,6 @@ footer .language select option:hover, footer .language select option:focus {
   color: #FC3159;
 }
 
-.page-series {
-  padding-top: 6.25rem;
-}
-@media screen and (min-width: 1280px) {
-  .page-series {
-    padding-top: 5.625rem;
-  }
-}
 .page-series .list-post {
   padding-top: 1.5625rem;
 }
