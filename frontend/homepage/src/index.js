@@ -77,7 +77,7 @@ function App () {
                         <OtherUser />
                     </Route>
 
-                    <Route path="/EditProfile">
+                    <Route path="/editprofile">
                         <EditProfile />
                     </Route>
 

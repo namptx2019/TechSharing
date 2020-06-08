@@ -9,6 +9,7 @@ import {
   } from "react-router-dom";
 import UserService, { UserServiceError } from "../../services/user.service";
 import { Input } from 'reactstrap';
+import Form from 'react-validation/build/form';
 import { useHistory } from "react-router-dom";
 
 const EditProfile = () => {
@@ -46,7 +47,7 @@ const EditProfile = () => {
     
       const fetchUser = async () => {
         try{
-            debugger;
+            // debugger;
             const response = await UserService.getUserInfo();
             setUser(response.data);
         }
@@ -105,13 +106,15 @@ const EditProfile = () => {
         formData.append('date_of_birth', User.date_of_birth);
         formData.append('status', 1);
 
-        debugger;
+        //debugger;
         if(Password !== ''){
           if(ConfirmPassword !== Password){
             setError(['Confirm password are not match']);
+            
           }
           else{
             formData.append('password', Password);
+            
             try {
               const response = await UserService.edit(User.uuid,formData);
               if(response.error){
@@ -131,12 +134,13 @@ const EditProfile = () => {
         }
         else{
           try {
-            const response = await UserService.edit(User.uuid,formData);
-            
+            const response = await UserService.update(User.uuid,formData);
+            alert('Success!');
+            history.push('/profile/me');
             return response;
           } catch(e) {
             if(e instanceof UserServiceError){
-    
+                alert('exception: ' + e);
             }
           }
         }
@@ -147,7 +151,7 @@ const EditProfile = () => {
       },[User.uuid]);
 
     return(
-        <div className="profile-info page-padding" v-if="user !== null">
+        <div className="profile-info page-padding">
             <div className="container">
                 <div className="row">
                     <div className="col-12 col-xl-5 mb-4">
@@ -161,7 +165,7 @@ const EditProfile = () => {
                                 </div>
                                 <div className="general-info-resume-intro">
                                     <h1 className="username">{User.username}</h1>
-                                    <p className="status" title="entry" v-if="user.entry">User Entry</p>
+                                    <p className="status" title="entry">User Entry</p>
                                 </div>
                             </div>
                             <div className="general-info-reaction d-flex justify-content-between align-items-center">
@@ -198,101 +202,104 @@ const EditProfile = () => {
 
                     </div>
 
-                    <div className="col-12 col-xl-7 mb-4">
-                        <div className="detail-info box-shadow">
-                            <div className="row">
-                                <div className="col-4">
-                                    <span className="text-field">User name</span>
+                    <Form className="col-12 col-xl-7 mb-4" onSubmit={() => handleSubmitSave()} >
+                        <div >
+                            <div className="detail-info box-shadow">
+                                <div className="row">
+                                    <div className="col-4">
+                                        <span className="text-field">User name</span>
+                                    </div>
+                                    <div className="col-8">
+                                        <Input  type="text" className="field-value" id="name-input" defaultValue={User.username} name="username" onChange={(e) => handleChange(e)}/>
+                                    </div>
                                 </div>
-                                <div className="col-8">
-                                    <Input  type="text" className="field-value" id="name-input" defaultValue={User.username} name="username" onChange={(e) => handleChange(e)}/>
+                                <hr/>
+
+                                <div className="row" >
+                                    <div className="col-4">
+                                        <span className="text-field">Email</span>
+                                    </div>
+                                    <div className="col-8">
+                                        <Input type="text" className="field-value" id="email-input" defaultValue={User.email} name="email" onChange={(e) => handleChange(e)}/>
+                                    </div>
                                 </div>
+                                <hr/>
+
+
+                                <div className="row">
+                                    <div className="col-4">
+                                        <span className="text-field">Gender</span>
+                                    </div>
+                                    <Input type="select"  style={{width: '20vh'}} className="field-value" name="gender" id="select" defaultValue={User.gender} onChange={(e) => handleChange(e)}>
+                                        <option value="0" >Please select gender</option>
+                                        {GenderList.map(item => <option key={item.id} value={item.id}>{item.name}</option>)}
+                                    </Input>
+                                </div>
+                                <hr/>
+
+                                <div className="row">
+                                    <div className="col-4">
+                                        <span className="text-field">Phone number</span>
+                                    </div>
+                                    <div className="col-8">
+                                        <Input type="text" className="field-value" id="phone-input" defaultValue={User.phone} name="phone" onChange={(e) => handleChange(e)}/>
+                                    </div>
+                                </div>
+                                <hr/>
+
+                                <div className="row" >
+                                    <div className="col-4">
+                                        <span className="text-field">Day of birth</span>
+                                    </div>
+                                    <div className="col-8">
+                                        <Input type="date" className="field-value" id="dob-input" defaultValue={User.date_of_birth} name="date_of_birth" onChange={(e) => handleChange(e)}/>
+                                    </div>
+                                </div>
+                                <hr />
+
+
+                                <div className="row">
+                                    <div className="col-4">
+                                        <span className="text-field">Working place</span>
+                                    </div>
+                                    <div className="col-8">
+                                        <Input type="text" className="field-value" id="working-place-input" defaultValue={User.working_place} name="working_place" onChange={(e) => handleChange(e)}/>
+                                    </div>
+                                </div>
+                                <hr/>
+
+                                <div className="row">
+                                    <div className="col-4">
+                                        <span className="text-field">Password</span>
+                                    </div>
+                                    <div className="col-8">
+                                        <Input 	type="password"
+                                                    name="password"
+                                                    className="field-value"
+                                                    placeholder={'Password'}
+                                                    onChange={(e) => handleChangePassword(e)}
+                                                    validations={[minPasswordLength]}
+                                                    />
+                                    </div>
+
+                                    <div className="col-4">
+                                        <span className="text-field">Confirm password</span>
+                                    </div>
+                                    <div className="col-8">
+                                        <Input 	type="password"
+                                                    name="confirm_password"
+                                                    className="field-value"
+                                                    placeholder={'Confirm password'}
+                                                    onChange={(e) => handleChangeConfirmPass(e)}
+                                                    />
+                                    </div>
+                                </div>
+                                <hr/>
+                                
                             </div>
-                            <hr/>
-
-                            <div className="row" v-if="user.display_settings.email">
-                                <div className="col-4">
-                                    <span className="text-field">Email</span>
-                                </div>
-                                <div className="col-8">
-                                    <Input type="text" className="field-value" id="email-input" defaultValue={User.email} name="email" onChange={(e) => handleChange(e)}/>
-                                </div>
-                            </div>
-                            <hr v-if="user.display_settings.email"/>
-
-
-                            <div className="row">
-                                <div className="col-4">
-                                    <span className="text-field">Gender</span>
-                                </div>
-                                <Input type="select" className="field-value" name="gender" id="select" defaultValue={User.gender} onChange={(e) => handleChange(e)}>
-                                    <option value="0" style={{width: '100px'}}>Please select gender</option>
-                                    {GenderList.map(item => <option key={item.id} value={item.id}>{item.name}</option>)}
-                                </Input>
-                            </div>
-                            <hr/>
-
-                            <div className="row">
-                                <div className="col-4">
-                                    <span className="text-field">Phone number</span>
-                                </div>
-                                <div className="col-8">
-                                    <Input type="text" className="field-value" id="phone-input" defaultValue={User.phone} name="phone" onChange={(e) => handleChange(e)}/>
-                                </div>
-                            </div>
-                            <hr/>
-
-                            <div className="row" >
-                                <div className="col-4">
-                                    <span className="text-field">Day of birth</span>
-                                </div>
-                                <div className="col-8">
-                                    <Input type="date" className="field-value" id="dob-input" defaultValue={User.date_of_birth} name="date_of_birth" onChange={(e) => handleChange(e)}/>
-                                </div>
-                            </div>
-                            <hr />
-
-
-                            <div className="row">
-                                <div className="col-4">
-                                    <span className="text-field">Working place</span>
-                                </div>
-                                <div className="col-8">
-                                    <Input type="text" className="field-value" id="working-place-input" defaultValue={User.working_place} name="working_place" onChange={(e) => handleChange(e)}/>
-                                </div>
-                            </div>
-                            <hr/>
-
-                            <div className="row">
-                                <div className="col-4">
-                                    <span className="text-field">Password</span>
-                                </div>
-                                <div className="col-8">
-                                    <Input 	type="password"
-                                                name="password"
-                                                className="field-value"
-                                                placeholder={'Password'}
-                                                onChange={(e) => handleChangePassword(e)}
-                                                validations={[minPasswordLength]}
-                                                />
-                                </div>
-
-                                <div className="col-4">
-                                    <span className="text-field">Confirm password</span>
-                                </div>
-                                <div className="col-8">
-                                    <Input 	type="password"
-                                                name="confirm_password"
-                                                className="field-value"
-                                                placeholder={'Confirm password'}
-                                                onChange={(e) => handleChangeConfirmPass(e)}
-                                                />
-                                </div>
-                            </div>
-                            <hr/>
-                            
                         </div>
-                    </div>
+                    </Form>
+                    
                 </div>
 
             </div>

@@ -21,7 +21,7 @@ const UserProfile = () => {
         working_place: '',
         date_of_birth: ''
       });
-      
+
     const fetchUser = async () => {
         try{
             debugger;
@@ -38,7 +38,7 @@ const UserProfile = () => {
       },[]);
 
     return(
-        <div className="profile-info page-padding" v-if="user !== null">
+        <div className="profile-info page-padding">
             <div className="container">
                 <div className="row">
                     <div className="col-12 col-xl-5 mb-4">
@@ -52,8 +52,8 @@ const UserProfile = () => {
                                 </div>
                                 <div className="general-info-resume-intro">
                                     <h1 className="username">{User.username}</h1>
-                                    <p className="status" title="entry" v-if="user.entry">User Entry</p>
-                                    <Link tag="a" to ='/EditProfile' className="btn btn-sm btn-info" >
+                                    <p className="status" title="entry">User Entry</p>
+                                    <Link tag="a" to ='/editprofile' className="btn btn-sm btn-info" >
                                         Edit
                                     </Link>
 
@@ -100,7 +100,7 @@ const UserProfile = () => {
                             </div>
                             <hr/>
 
-                            <div className="row" v-if="user.display_settings.email">
+                            <div className="row">
                                 <div className="col-4">
                                     <span className="text-field">Email</span>
                                 </div>
@@ -108,7 +108,7 @@ const UserProfile = () => {
                                     <span className="field-value">{User.email}</span>
                                 </div>
                             </div>
-                            <hr v-if="user.display_settings.email"/>
+                            <hr/>
 
 
                             <div className="row">
