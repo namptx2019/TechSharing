@@ -8,6 +8,8 @@ import {
 	Link
   } from "react-router-dom";
 import UserService, { UserServiceError } from "../../services/user.service";
+import DEFAULT_AVATAR from "../../static/images/default-avatar.png";
+
 
 
 const UserProfile = () => {
@@ -45,8 +47,8 @@ const UserProfile = () => {
                             <div className="general-info-resume d-flex flex-xl-column justify-content-start align-items-start">
                                 <div className="general-info-resume-ava">
                                     <div className="thumb">
-                                        { User.avatars.length != 0  && <img src={User.avatars}   alt='avatar'/>}
-                                        { User.avatars.length == 0 && <img src={require('../../static/images/default-avatar.png')}   alt='avatar'/>}
+                                        {User && User.avatars && User.avatars.length !== 0  && <img src={User.avatars[0].full_path}    alt='avatar'/>}
+                                        {User && User.avatars && User.avatars.length == 0 && <img src={DEFAULT_AVATAR}/>}
                                     </div>
                                 </div>
                                 <div className="general-info-resume-intro">
