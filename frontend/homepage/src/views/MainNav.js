@@ -67,9 +67,9 @@ const MainNav = () => {
 											<button className="btn nav-button btn-danger">Login</button>
 										</Link>
 									</li>
-                                    <li>
-										<Link to ="/Register">
-											<button className="btn nav-button btn-danger">Register</button>
+									<li>
+										<Link to ="/register">
+											<button className="btn nav-button btn-secondary">Register</button>
 										</Link>
 									</li>
 								</ul>

@@ -10,30 +10,28 @@ import CheckButton from 'react-validation/build/button';
 import { isEmail, isEmpty } from 'validator';
 
 import "react-datepicker/dist/react-datepicker.css";
-
-
+import moment from 'moment'
+import DEFAULT_AVATAR from '../../static/images/default-avatar.png'
 const Register = () => {
-    // const [User, setUser] = useState({});
-    // const [error, setError] = useState([]);
-    // const handleChange = (event) => {
-    //     User[event.target.name] = event.target.value;
-    // };
-    // const handleSubmit = async (data) => {
-    //     try {
-    //         const response = await UserService.login(data);
-    //         window.location.href = '/';
-    //     } catch(e) {
-    //         if(e instanceof UserServiceError){
-    //             setError(e)
-    //         }
-    //     }
-    // };
+    const [User, setUser] = useState({
+      role_id: 5,
+      avatars: [],
+      phone: '',
+      gender: 1,
+      working_place: '',
+      date_of_birth: ''
+    });
     const [step, setStep] = useState(0);
-    const [password, setPassword] = useState();
+    const [FormValid, setFormValid] = useState([]);
+    const [Check, setCheck] = useState([]);
+    const [Password, setPassword] = useState('');
+    const [DOB, setDOB] = useState('');
+    const [ConfirmPassword, setConfirmPassword] = useState('');
+    const [imgPreview, setimgPreview] = useState(DEFAULT_AVATAR);
 
     const emailRequired = (value) => {
         if (isEmpty(value)) {
-            return <small className="form-text text-danger" style={{float: "left", paddingTop: "0"}}>Email is required</small>;
+            return <small className="form-text text-danger">Email is required</small>;
         }
       }
 
@@ -59,32 +57,81 @@ const Register = () => {
         if (value.trim().length < 6) {
             return <small className="form-text text-danger" style={{marginTop: 0}}>Username must be at least 6 characters long</small>;
         }
+
       }
 
     const minPasswordLength = (value) => {
-        if (value.trim().length < 6) {
-            return <small className="form-text text-danger">Password must be at least 6 characters long</small>;
+        if (value.trim().length < 8) {
+            return <small className="form-text text-danger">Password must be at least 8 characters long</small>;
         }
       }
 
-    const confirmPw = (value) => {
-          if(value != password)
-          {
-            return <small className="form-text text-danger">Confirm wrong password</small>;
+    const handleChangeDOB = (date) => {
+      setDOB(date);
+    }
+
+    const handleChange = (event) => {
+      const { name, value } = event.target;
+      User[name] = value;
+    }
+
+    const handleChangePassword = (event) => {
+      setPassword(event.target.value);
+    }
+    const handleChangeConfirmPassword = (event) => {
+      setConfirmPassword(event.target.value);
+    }
+
+  const previewImg = (file) => {
+    if (file && file.item(0)) {
+      const reader = new FileReader();
+      reader.onload = function(e) {
+        setimgPreview(e.target['result']);
+      };
+      reader.readAsDataURL(file.item(0));
+    }
+  }
+
+    const nextStep = () => {
+      FormValid.validateAll();
+      if(Check.context._errors.length === 0 && Password === ConfirmPassword){
+        setStep(step +1);
+      }
+    }
+
+    const onSubmit = (e) => {
+      e.preventDefault();
+      FormValid.validateAll();
+      if ( Check.context._errors.length === 0) {
+        let formData = new FormData();
+        let dataValidate = FormValid.getValues();
+        if (User.avatars?.name) {
+          formData.append('avatar', User.avatars);
+        }        
+        formData.append('username', dataValidate.username);
+        formData.append('email', dataValidate.email);
+        formData.append('role_id', 2);
+        formData.append('gender', User.gender);
+        formData.append('phone', User.phone);
+        formData.append('working_place', User.working_place);
+        formData.append('date_of_birth', moment(DOB).format('YYYY-MM-DD'));
+        formData.append('status', 1);
+        formData.append('password', Password);
+        formData.append('confirm_password', ConfirmPassword);
+        console.log(formData);
+        try {
+          const response = UserService.register(formData);
+          console.log(response);
+        } catch(e) {
+          if(e instanceof UserServiceError){
+
           }
-      }
-
-      const onSubmit = (e) => {
-        e.preventDefault();
-        this.form.validateAll();
-
-        if ( this.checkBtn.context._errors.length === 0 ) {
-          alert('success')
         }
+      }
     }
 
     return(
-        <section className="section-block">
+        <section className="section-block page-auth">
             <div className="container">
                 <div className="row">
                     <div className="col-12 col-lg-6">
@@ -95,10 +142,10 @@ const Register = () => {
                             {step==0 && <span className="page-auth-header-desc">Sign an new account for your future activity in our TechSharing community</span>}
                             {step==1 && <span className="page-auth-header-desc">Almost done! We need just a little more info to set up your account</span>}
                         </div>
-                        <Form onSubmit={e => onSubmit(e)} >
+                        <Form onSubmit={e => onSubmit(e)} ref={c => { setFormValid(c)  }}>
                             <div className="page-auth-form pb-4">
                                 {/* //  REGISTER STEP 0  */}
-                                {step==0 && <div v-if="step == 0">
+                                {step==0 && <div>
                                     <Input 	type="email"
                                             name="email"
                                             className="form-control"
@@ -117,6 +164,7 @@ const Register = () => {
                                             name="password"
                                             className="form-control"
                                             placeholder={'Password'}
+                                            onChange={(e) => handleChangePassword(e)}
                                             validations={[passwordRequired, minPasswordLength]}
                                             />
 
@@ -124,14 +172,16 @@ const Register = () => {
                                             name="confirm_password"
                                             className="form-control"
                                             placeholder={'Confirm password'}
+                                            onChange={(e) => handleChangeConfirmPassword(e)}
                                             />
+                                  {Password !== ConfirmPassword && <small className="form-text text-danger">Confirm password is not match with password</small>}
                                 </div>}
 
                                 {/* // REGISTER STEP 1 */}
-                                {step==1 && <div v-if="step == 1">
-                                    <DatePicker name="day of birth" placeholder={'Date of birth'} dateFormat="yyyy-MM-dd"></DatePicker>
+                                {step==1 && <div>
+                                    <DatePicker selected={DOB} onChange={(date) => handleChangeDOB(date)} name="date_of_birth" dateFormat="yyyy-MM-dd"></DatePicker>
 
-                                    <select required name="gender" className="form-control select-gender" v-model="models[1].gender">
+                                    <select onChange={(e) => handleChange(e)} required name="gender" className="form-control select-gender">
                                         <option value="" disabled hidden>Gender</option>
                                         <option value="0">Male</option>
                                         <option value="1">Female</option>
@@ -141,35 +191,36 @@ const Register = () => {
                                     <input 	type="text"
                                             name="phone"
                                             className="form-control"
+                                            onChange={(e) => handleChange(e)}
                                             placeholder={'Phone number (optional)'}/>
 
                                     <span className="page-auth-form-note">The phone number is for account security. It won’t be visible to others.</span>
                                 </div>}
 
                                 {/* REGISTER STEP 2 */}
-                                {step == 2 && <div v-if="step == 2" className="upload-ava">
+                                {step == 2 && <div className="upload-ava">
                                     <label for="avatar">
                                         <div className="preview-avatar">
                                             <div className="ava box-shadow">
-                                                <img id="previewAvatar" src={require('../../static/images/default-avatar.png')} alt=""/>
+                                                <img id="previewAvatar" src={imgPreview}  alt=""/>
                                             </div>
                                         </div>
                                         <span>Upload Avatar</span>
                                     </label>
-                                    <input type="file" name="avatar" id="avatar" className="hidden" accept="image/*" />
+                                    <input type="file" name="avatar" id="avatar" className="hidden" accept="image/*" onChange={(e) => previewImg(e.target.files)}/>
                                 </div>}
 
-                                {step>0 && <button type="button" className="btn btn-secondary">Back</button>}
-                                {step==0 && <button type="button" className="btn btn-primary" >Get Started</button>}
-                                {step==1 && <button type="button" className="btn btn-primary" >Next</button>}
-                                {step==2 && <button type="button" className="btn btn-primary" >Finish <img width="30" v-show="loading" className="spinner" src={require('../../static/images/rolling.svg')} alt=""/></button>}
+                                {step>0 && <button type="button" onClick={()=> setStep(step-1)} className="btn btn-secondary">Back</button>}
+                                {step==0 && <button type="button" onClick={()=> nextStep()} className="btn btn-primary" >Get Started</button>}
+                                {step==1 && <button type="button" onClick={()=> nextStep()} className="btn btn-primary" >Next</button>}
+                                {step==2 && <button type="submit" className="btn btn-primary" >Finish</button>}
 
-
+                              <CheckButton style={{ display: 'none' }} ref={c => { setCheck(c) }} />
                             </div>
                         </Form>
                     </div>
                     <div className="col-lg-6 d-none d-lg-block">
-                        <div className="loginimg">
+                        <div className="right-bg">
                             <img src={require('../../static/images/thumbnail/3.png')}/>
                         </div>
                     </div>

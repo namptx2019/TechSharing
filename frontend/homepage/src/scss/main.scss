@@ -93,7 +93,7 @@
     }
 
     &-wrapper{
-        position: fixed;
+        position: fixed !important;
         top: 0;
         margin-top: 80px;
         left: 50%;
@@ -154,11 +154,19 @@
 }
 
 .page-auth .right-bg{
-  width: 100%;
+  width: 100% !important;
   img{
   object-fit: cover;
   object-position: center;
   height: 100%;
   width: 100%;
 }
+}
+
+
+.react-datepicker-wrapper{
+  width: 100%;
+  input{
+    width: 100%;
+  }
 }
