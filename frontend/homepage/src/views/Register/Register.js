@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import {
     Alert
 } from 'reactstrap';
+import { useHistory } from "react-router-dom";
 import UserService, { UserServiceError } from "../../services/user.service"
 import DatePicker from "react-datepicker";
 import Form from 'react-validation/build/form';
@@ -13,7 +14,10 @@ import "react-datepicker/dist/react-datepicker.css";
 import moment from 'moment'
 import DEFAULT_AVATAR from '../../static/images/default-avatar.png'
 const Register = () => {
+    const history = useHistory();
     const [User, setUser] = useState({
+        username:'',
+        email: '',
       role_id: 5,
       avatars: [],
       phone: '',
@@ -90,6 +94,11 @@ const Register = () => {
       };
       reader.readAsDataURL(file.item(0));
     }
+      setUser((prevState) =>
+          ({
+              ...prevState,
+              avatars: file.item(0)
+          }));
   }
 
     const nextStep = () => {
@@ -104,12 +113,11 @@ const Register = () => {
       FormValid.validateAll();
       if ( Check.context._errors.length === 0) {
         let formData = new FormData();
-        let dataValidate = FormValid.getValues();
         if (User.avatars?.name) {
           formData.append('avatar', User.avatars);
         }        
-        formData.append('username', dataValidate.username);
-        formData.append('email', dataValidate.email);
+        formData.append('username', User.username);
+        formData.append('email', User.email);
         formData.append('role_id', 2);
         formData.append('gender', User.gender);
         formData.append('phone', User.phone);
@@ -118,9 +126,14 @@ const Register = () => {
         formData.append('status', 1);
         formData.append('password', Password);
         formData.append('confirm_password', ConfirmPassword);
-        console.log(formData);
         try {
           const response = UserService.register(formData);
+          if(response.error){
+
+          }
+          else{
+              history.push('/login');
+          }
           console.log(response);
         } catch(e) {
           if(e instanceof UserServiceError){
@@ -148,6 +161,7 @@ const Register = () => {
                                 {step==0 && <div>
                                     <Input 	type="email"
                                             name="email"
+                                            onChange={(e) => handleChange(e)}
                                             className="form-control"
                                             placeholder={'Email'}
                                             validations={[emailRequired, email]}
@@ -156,6 +170,7 @@ const Register = () => {
                                     <Input 	type="text"
                                             name="username"
                                             className="form-control"
+                                            onChange={(e) => handleChange(e)}
                                             placeholder={'Username'}
                                             validations={[usernameRequired, minUsernameLength]}
                                             />
