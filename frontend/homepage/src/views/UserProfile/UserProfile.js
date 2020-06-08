@@ -24,7 +24,6 @@ const UserProfile = () => {
       
     const fetchUser = async () => {
         try{
-            debugger;
             const response = await UserService.getUserInfo();
             setUser(response.data);
         }
@@ -59,23 +58,7 @@ const UserProfile = () => {
 
                                 </div>
                             </div>
-                            <div className="general-info-reaction d-flex justify-content-between align-items-center">
-                                <div className="general-info-reaction-item">
-                                    <div className="general-info-reaction-item-title">
-                                        Ranking
-                                    </div>
-                                    <div className="general-info-reaction-item-content">
-                                        <img className="medal" src={require('../../static/images/medal.png')} alt="medal-platinum"/> Platinum
-                                    </div>
-                                </div>
-                                <div className="general-info-reaction-item">
-                                    <div className="general-info-reaction-item-title">
-                                        Favorites
-                                    </div>
-                                    <div className="general-info-reaction-item-content">
-                                        1100
-                                    </div>
-                                </div>
+                            <div className="general-info-reaction text-center">
                                 <div className="general-info-reaction-item">
                                     <div className="general-info-reaction-item-title">
                                         Score
@@ -100,7 +83,7 @@ const UserProfile = () => {
                             </div>
                             <hr/>
 
-                            <div className="row" v-if="user.display_settings.email">
+                            <div className="row">
                                 <div className="col-4">
                                     <span className="text-field">Email</span>
                                 </div>

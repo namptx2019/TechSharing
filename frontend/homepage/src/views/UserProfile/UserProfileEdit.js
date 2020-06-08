@@ -10,12 +10,12 @@ import {
 import UserService, { UserServiceError } from "../../services/user.service";
 import { Input } from 'reactstrap';
 import { useHistory } from "react-router-dom";
+import DEFAULT_AVATAR from "../../static/images/default-avatar.png"
 
 const EditProfile = () => {
 
     const history = useHistory();
     const [User, setUser] = useState({
-        username: '',
         email: '',
         role_id: 2,
         avatars: [],
@@ -42,20 +42,22 @@ const EditProfile = () => {
           name: 'Other'
         }
       ]);
-      const [imgPreview, setimgPreview] = useState([]);
+      const [imgPreview, setimgPreview] = useState([DEFAULT_AVATAR]);
     
       const fetchUser = async () => {
         try{
-            debugger;
             const response = await UserService.getUserInfo();
             setUser(response.data);
+            if(User.avatars?.length !== 0){
+                setimgPreview(User.avatars[0].full_path);
+            }
         }
         catch(e){
             alert('Exception detail:' + e);
         }
     }
     
-    const minPasswordLength = (value) => {
+        const minPasswordLength = (value) => {
         if (value.trim().length < 8) {
             return <small className="form-text text-danger">Password must be at least 8 characters long</small>;
         }
@@ -69,6 +71,7 @@ const EditProfile = () => {
       const handleChangePassword = (event) => {
         const { value } = event.target;
         setPassword(value)
+          console.log(User);
       }
     
       const handleChangeConfirmPass = (event) => {
@@ -105,7 +108,6 @@ const EditProfile = () => {
         formData.append('date_of_birth', User.date_of_birth);
         formData.append('status', 1);
 
-        debugger;
         if(Password !== ''){
           if(ConfirmPassword !== Password){
             setError(['Confirm password are not match']);
@@ -113,7 +115,7 @@ const EditProfile = () => {
           else{
             formData.append('password', Password);
             try {
-              const response = await UserService.edit(User.uuid,formData);
+              const response = await UserService.update(User.uuid,formData);
               if(response.error){
                 alert('error' + response.error);
               }
@@ -131,8 +133,7 @@ const EditProfile = () => {
         }
         else{
           try {
-            const response = await UserService.edit(User.uuid,formData);
-            
+            const response = await UserService.update(User.uuid,formData);
             return response;
           } catch(e) {
             if(e instanceof UserServiceError){
@@ -144,10 +145,10 @@ const EditProfile = () => {
     
       useEffect(() => {
         fetchUser();
-      },[User.uuid]);
+      },[User.username]);
 
     return(
-        <div className="profile-info page-padding" v-if="user !== null">
+        <div className="profile-info page-padding">
             <div className="container">
                 <div className="row">
                     <div className="col-12 col-xl-5 mb-4">
@@ -155,38 +156,23 @@ const EditProfile = () => {
                             <div className="general-info-resume d-flex flex-xl-column justify-content-start align-items-start">
                                 <div className="general-info-resume-ava">
                                     <div className="thumb">
-                                        { User.avatars.length != 0  && <img src={User.avatars} DEFAULT_AVATAR  alt='avatar'/>}
-                                        { User.avatars.length == 0 && <img src={require('../../static/images/default-avatar.png')} DEFAULT_AVATAR  alt='avatar'/>}
+                                        <label for="avatar">
+                                            <img id="previewAvatar" src={imgPreview}/>
+                                        </label>
+                                        <input type="file" name="avatar" id="avatar" className="d-none" accept="image/*" onChange={(e) => previewFile(e.target.files)}/>
                                     </div>
                                 </div>
                                 <div className="general-info-resume-intro">
                                     <h1 className="username">{User.username}</h1>
-                                    <p className="status" title="entry" v-if="user.entry">User Entry</p>
                                 </div>
                             </div>
-                            <div className="general-info-reaction d-flex justify-content-between align-items-center">
-                                <div className="general-info-reaction-item">
-                                    <div className="general-info-reaction-item-title">
-                                        Ranking
-                                    </div>
-                                    <div className="general-info-reaction-item-content">
-                                        <img className="medal" src={require('../../static/images/medal.png')} alt="medal-platinum"/> Platinum
-                                    </div>
-                                </div>
-                                <div className="general-info-reaction-item">
-                                    <div className="general-info-reaction-item-title">
-                                        Favorites
-                                    </div>
-                                    <div className="general-info-reaction-item-content">
-                                        1100
-                                    </div>
-                                </div>
+                            <div className="general-info-reaction text-center">
                                 <div className="general-info-reaction-item">
                                     <div className="general-info-reaction-item-title">
                                         Score
                                     </div>
                                     <div className="general-info-reaction-item-content">
-                                        User score
+                                        {User.score}
                                     </div>
                                 </div>
                             </div>
@@ -202,33 +188,35 @@ const EditProfile = () => {
                         <div className="detail-info box-shadow">
                             <div className="row">
                                 <div className="col-4">
-                                    <span className="text-field">User name</span>
+                                    <span className="text-field">Username</span>
                                 </div>
                                 <div className="col-8">
-                                    <Input  type="text" className="field-value" id="name-input" defaultValue={User.username} name="username" onChange={(e) => handleChange(e)}/>
+                                    <Input  type="text" className="field-value" id="name-input" placeholder={User.username}  disabled/>
                                 </div>
                             </div>
                             <hr/>
 
-                            <div className="row" v-if="user.display_settings.email">
+                            <div className="row">
                                 <div className="col-4">
                                     <span className="text-field">Email</span>
                                 </div>
                                 <div className="col-8">
-                                    <Input type="text" className="field-value" id="email-input" defaultValue={User.email} name="email" onChange={(e) => handleChange(e)}/>
+                                    <Input type="text" className="field-value" id="email-input"  placeholder={User.email} disabled/>
                                 </div>
                             </div>
-                            <hr v-if="user.display_settings.email"/>
-
+                            <hr />
 
                             <div className="row">
                                 <div className="col-4">
                                     <span className="text-field">Gender</span>
                                 </div>
-                                <Input type="select" className="field-value" name="gender" id="select" defaultValue={User.gender} onChange={(e) => handleChange(e)}>
-                                    <option value="0" style={{width: '100px'}}>Please select gender</option>
-                                    {GenderList.map(item => <option key={item.id} value={item.id}>{item.name}</option>)}
-                                </Input>
+                                <div className="col-8">
+                                    <Input type="select" className="field-value" name="gender" id="select" defaultValue={User.gender} onChange={(e) => handleChange(e)}>
+                                        <option value="0" style={{width: '100px'}}>Please select gender</option>
+                                        {GenderList.map(item => <option key={item.id} value={item.id}>{item.name}</option>)}
+                                    </Input>
+                                </div>
+
                             </div>
                             <hr/>
 
@@ -267,11 +255,10 @@ const EditProfile = () => {
                                 <div className="col-4">
                                     <span className="text-field">Password</span>
                                 </div>
-                                <div className="col-8">
+                                <div className="col-8 mb-2">
                                     <Input 	type="password"
                                                 name="password"
                                                 className="field-value"
-                                                placeholder={'Password'}
                                                 onChange={(e) => handleChangePassword(e)}
                                                 validations={[minPasswordLength]}
                                                 />
@@ -284,7 +271,6 @@ const EditProfile = () => {
                                     <Input 	type="password"
                                                 name="confirm_password"
                                                 className="field-value"
-                                                placeholder={'Confirm password'}
                                                 onChange={(e) => handleChangeConfirmPass(e)}
                                                 />
                                 </div>

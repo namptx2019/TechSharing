@@ -112,19 +112,13 @@ const UserService = {
 
     /**
      * Update user by uuid
+     *
+     *
+     * @return {Object}
      */
-    update: async function(uuid, data) {
-
-        const requestData = {
-            method: 'post',
-            url: `/api/user/edit/${uuid}`,
-            data: data,
-            headers: {'Content-Type': 'multipart/form-data' }
-        }
-
+    update: async function(uuid,data){
         try {
-            const response = await ApiService.customRequest(requestData);
-
+            const response = await ApiService.post(`/api/user/edit/${uuid}`, data);
             return response.data;
         } catch(e) {
             throw new UserServiceError(e.response.status, e.response.data.message);
