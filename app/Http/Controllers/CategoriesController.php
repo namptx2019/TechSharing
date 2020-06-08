@@ -211,7 +211,6 @@ class CategoriesController extends Controller
         $category = $this->repository->skipPresenter()->findByField('slug', $slug)->first();
         $category->hasSeries;
         $category->hasPosts;
-        $category->hasContest;
 
         if (request()->wantsJson()) {
 
@@ -263,10 +262,8 @@ class CategoriesController extends Controller
         $categories = $this->repository ->skipPresenter()
             ->hidden(['created_by', 'updated_by'])
             ->withCount('hasPosts')
-            ->withCount('hasContest')
             ->withCount('hasSeries')
             ->orderBy('has_posts_count', 'DESC')
-            ->orderBy('has_contest_count', 'DESC')
             ->orderBy('has_series_count', 'DESC')
             ->scopeQuery(function ($query) {
                 return $query

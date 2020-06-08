@@ -5,12 +5,14 @@ import {
     PaginationItem,
     PaginationLink,
 } from 'reactstrap';
+import moment from 'moment';
 import Select from 'react-select';
-import PostService, {PostServiceError} from "../../services/post.service";
+import SeriesService, {SeriesServiceError} from "../../services/series.service";
 import CategoryService, {CategoryServiceError} from "../../services/category.service";
-const PostList = () => {
 
-    const [PostList, setPostList] = useState([]);
+const SeriesList = () => {
+
+    const [SeriesList, setSeriesList] = useState([]);
     const [CategoryList, setCategoryList] = useState([]);
     const [filters, setFilters] = useState({
         category: 0,
@@ -18,16 +20,16 @@ const PostList = () => {
         name: '',
     });
     const [currentPage, setCurrentPage] = useState(0);
-    const pageSize = 20;
-    const pagesCount = Math.ceil(PostList.length / pageSize);
+    const pageSize = 5;
+    const pagesCount = Math.ceil(SeriesList.length / pageSize);
 
-    const fetchPosts = async (searchInputs = null) => {
+    const fetchSeries = async (searchInputs = null) => {
         try {
-            const response = await PostService.paginate(searchInputs);
-            setPostList(response.data);
+            const response = await SeriesService.popular(searchInputs);
+            setSeriesList(response.data);
             return response;
         } catch(e) {
-            if(e instanceof PostServiceError){
+            if(e instanceof SeriesServiceError){
 
             }
         }
@@ -47,12 +49,12 @@ const PostList = () => {
 
     const limitStr = (input, limit) => {
         if(input.length > limit){
-        return input = input.substr(0, limit)+" ...";
+            return input = input.substr(0, limit)+" ...";
         }
         return input;
     }
 
-    const searchPost = (event) => {
+    const searchSeries = (event) => {
         if(event){
             const { name, value } = event.target;
             filters[name] = value;
@@ -62,12 +64,12 @@ const PostList = () => {
         } else {
             filters.search = "name:"+filters.name;
         }
-        fetchPosts(filters.search);
+        fetchSeries(filters.search);
     }
 
     const handleSelect = (selection, action) => {
         filters.category = selection.id;
-        searchPost();
+        searchSeries();
     }
 
     const handlePageClick = (e, index) => {
@@ -75,14 +77,18 @@ const PostList = () => {
         setCurrentPage(index);
     }
 
+    const fromNow = (input) => {
+        return moment(input).fromNow();
+    }
+
     useEffect(() => {
-        fetchPosts();
+        fetchSeries();
         fetchCategories();
     },[]);
 
     return(
-        <section className="section-block page-posts" id="LatestPosts">
-           <div className="container">
+        <section className="section-block page-series" id="LatestSeries">
+            <div className="container">
                 <div className="latest-post">
                     <div className="row align-items-start">
                         <div className="post-filter col-12 col-md-6 order-md-last">
@@ -90,7 +96,7 @@ const PostList = () => {
                                 <div className="row align-items-center justify-content-between">
                                     <div className="col-1 d-inline search-icon"><span className="icon-enter-search"></span></div>
                                     <div className="d-inline col-5 input-search">
-                                        <input type="text" className="inp-search" name="name" onChange={(e) =>searchPost(e)}/>
+                                        <input type="text" className="inp-search" name="name" onChange={(e) =>searchSeries(e)}/>
                                     </div>
                                     <div className="d-inline col-5">
                                         <Select
@@ -101,34 +107,53 @@ const PostList = () => {
                                             getOptionLabel={(CategoryList)=>CategoryList.name}
                                             getOptionValue={(CategoryList)=>CategoryList.id}
                                         />
+                                    </div>
                                 </div>
                             </div>
                         </div>
-                    </div>
-                    <div className="post-page-title col-12 col-md-6 order-md-first">
-                        <h2 className="title">All Posts</h2>
-                        <div className="primary left"><hr/></div>
+                        <div className="Series-page-title col-12 col-md-6 order-md-first">
+                            <h2 className="title">All Series</h2>
+                            <div className="primary left"><hr/></div>
+                        </div>
                     </div>
                 </div>
-            </div>
-                <div className="list-post">
-                    <div className="row" >
-                        {PostList.slice(currentPage * pageSize, (currentPage + 1) * pageSize).map(item =>
-                            <div className="col-6 col-sm-4 col-lg-3">
-                                <Link tag="a" to={/posts/ + item.slug} className="post">
-                                    <div className="img" style={{backgroundImage: `url(${item.thumbnailFullpath})`}}></div>
+                    {SeriesList && SeriesList.slice(currentPage * pageSize, (currentPage + 1) * pageSize).map(seriesItem =>
+                        <div className="list-post">
+                            <div className="row align-items-stretch" >
+                            <div className="col-12 col-xl-8">
+                                <Link to={'/series/'+seriesItem.slug} className="post latest-post">
+                                    <div className="img" style={{backgroundImage: `url(${seriesItem.full_path})`}}></div>
                                     <div className="content">
+                                        <h1 className="title">{limitStr(seriesItem.name,125)}</h1>
                                         <div className="author">
-                                        <span className="author-name">{item.author?.username}</span> <span> - </span> <span className="time-post">{item.diff_created}</span>
+                                            <span className="author-name">{seriesItem.author.username}</span>
                                         </div>
-                                        <h1 className="title">{limitStr(item.name,50)}</h1>
-                                        <p className="desc">{limitStr(item.description,75)}</p>
+                                        <p className="desc">{limitStr(seriesItem.desc,150)}</p>
                                     </div>
                                 </Link>
                             </div>
-                        )}
-                    </div>
-                </div>
+                            <div className="col-xl-4 d-none d-xl-flex flex-column align-items-start">
+                                {seriesItem.getAllPosts && seriesItem?.getAllPosts?.map(item =>
+                                    <Link tag="a" to={'/posts/' + item.slug} className="apost d-flex align-items-center justify-content-start">
+                                        <div className="apost-thumbnail">
+                                            <img src={item.full_path} alt=""/>
+                                        </div>
+                                        <div className="apost-information flex-fill">
+                                            <div className="apost-information-author">
+                                                <span className="author">{limitStr(item.author.username,12)}</span>
+                                                <span> - </span>
+                                                <span className="post-time">{fromNow(item.created_at.date) }</span>
+                                            </div>
+                                            <div className="apost-information-title">
+                                                {limitStr(item.name,17)}
+                                            </div>
+                                        </div>
+                                    </Link>
+                                )}
+                            </div>
+                        </div>
+                        </div>
+                    )}
             </div>
             <Pagination size="sm">
                 <PaginationItem disabled={currentPage <= 0}>
@@ -157,4 +182,4 @@ const PostList = () => {
     );
 }
 
-export default PostList;
+export default SeriesList;

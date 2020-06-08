@@ -87,7 +87,7 @@ Route::group(['middleware' => ['auth:api']], function () {
    * Routes for series and Series - Posts relations
    */
   Route::group(['prefix' => 'series'], function () {
-    Route::get('/', 'SeriesController@index')->name('api_series_list');
+    Route::get('/', 'SeriesController@getSeriesAllLanguage')->name('api_series_list');
     Route::get('/{id}', 'SeriesController@show')->where('id', '[0-9]+')->name('api_series_show');
     Route::post('create', 'SeriesController@store')->name('api_series_create');
     Route::post('edit/{id}', 'SeriesController@update')->where('id', '[0-9]+')->name('api_series_edit');

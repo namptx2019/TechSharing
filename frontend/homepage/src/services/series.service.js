@@ -31,7 +31,6 @@ const SeriesService = {
 				END_POINT.popular,
 				{
 					params: {
-						lang: LanguageService.getLang(),
 						search: searchInputs,
 						searchJoin: "and"
 					}
