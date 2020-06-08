@@ -64,10 +64,6 @@ const PopularSeries = () => {
                                 <h2 className="title">Popular Series</h2>
                                 <div className="primary left"><hr/></div>
                             </div>
-                            <div className="custom-nav-owl" style={{fontSize: 'unset'}}>
-                                <i className="prev icon-enter-tail-left"></i>
-                                <i className="next icon-enter-tail-right"></i>
-                            </div>
                         </div>
                     </div>
                 </div>
