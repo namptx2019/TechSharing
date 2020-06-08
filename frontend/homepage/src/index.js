@@ -48,11 +48,7 @@ function App () {
                         <PostDetails />
                     </Route>
 
-                    {!isLoggedin ? <Redirect to="/posts/" /> :
-                        <Route exact path="/post/add">
-                            <PostAdd />
-                        </Route>
-                    }
+
                     <Route path="/category/:slug">
                         <CategoryDetails />
                     </Route>
@@ -62,19 +58,25 @@ function App () {
                     <Route path="/series/:slug">
                         <SeriesDetails />
                     </Route>
+
                     <Route exact path="/login">
                         <Login />
                     </Route>
-                    <Route exact path="/Register">
+
+                    <Route exact path="/register">
                         <Register />
                     </Route>
 
-                    <Route exact path="/profile">
+                    <Route path="/profile/me">
                         <UserProfile />
                     </Route>
 
+                    {!isLoggedin ? <Redirect to="/posts/" /> :
+                        <Route exact path="/post/add">
+                            <PostAdd />
+                        </Route>
+                    }
                 </Switch>
-
                 <MainFooter/>
             </Router>
             
