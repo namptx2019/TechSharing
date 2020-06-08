@@ -22,7 +22,7 @@ $factory->define(App\Entities\Series::class, function (Faker $faker) {
     'category_id' => rand(0, 4),
     'viewed'      => rand(100, 400),
     'status'      => rand(0, 1),
-    'created_by'  => 12,
-    'updated_by'  => 23
+    'created_by'  => 10,
+    'updated_by'  => 10
   ];
 });

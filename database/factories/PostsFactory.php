@@ -40,8 +40,8 @@ $factory->define(App\Entities\Post::class, function (Faker $faker) {
     'content'     => $faker->realText(200),
     'slug'        => $faker->slug,
     'viewed'      => rand(10, 99),
-    'created_by'  => rand(10, 99),
-    'updated_by'  => rand(10, 99),
+    'created_by'  => rand(1, 10),
+    'updated_by'  => rand(1, 10),
     'status'      => 1
   ];
 });
