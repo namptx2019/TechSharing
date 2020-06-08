@@ -21,6 +21,7 @@ import {
 import ApiService from "./services/api.service";
 import {TokenService} from "./services/token.service";
 import UserProfile from './views/UserProfile/UserProfile';
+import Register from './views/Register/Register';
 ApiService.init(process.env.REACT_APP_API_URL);
 if(TokenService.getToken()){
     ApiService.setHeader();
@@ -51,6 +52,9 @@ function App () {
                     </Route>
                     <Route exact path="/login">
                         <Login />
+                    </Route>
+                    <Route exact path="/Register">
+                        <Register />
                     </Route>
 
                     <Route exact path="/profile">
