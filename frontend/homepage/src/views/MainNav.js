@@ -120,7 +120,7 @@ const MainNav = () => {
                                                     isDropdown && <div className="dropdown-profile card mt-2 box-shadow" onMouseLeave={() => setDropdown(false)}>
                                                         <ul className="dropdown-profile-wrapper">
                                                             <li>
-                                                                <Link tag="a" to={/profile/}>
+                                                                <Link tag="a" to="/profile/me">
                                                                     <i className="icon-enter-user mr-2"></i>Profile
                                                                 </Link>
                                                             </li>

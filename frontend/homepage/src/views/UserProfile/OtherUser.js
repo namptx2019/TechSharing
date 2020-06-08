@@ -1,25 +1,20 @@
 import React, { useState, useEffect } from 'react';
 import ReactDOM from 'react-dom';
+import { Link, useParams } from "react-router-dom";
 import '../../index.css';
-import {
-	BrowserRouter as Router,
-	Switch,
-	Route,
-	Link
-  } from "react-router-dom";
 import UserService, { UserServiceError } from "../../services/user.service";
 
 
-const UserProfile = () => {
-    const [User, setUser] = useState({});
-    let a;
+const OtherUser = () => {
+    let params = useParams();
 
-    const fetchUser = async () => {
+    const [User, setUser] = useState({});
+
+    const fetchUser = async (slug) => {
         try{
             debugger;
-            const response = await UserService.getUserInfo();
+            const response = await UserService.getUserByUuid(slug);
             setUser(response.data);
-            a = User.avatars;
         }
         catch(e){
             alert('Exception detail:' + e);
@@ -27,8 +22,8 @@ const UserProfile = () => {
     }
 
     useEffect(() => {
-        fetchUser();
-      },[]);
+        fetchUser(params.slug);
+      },[params.slug]);
 
     return(
         <div className="profile-info page-padding" v-if="user !== null">
@@ -45,9 +40,6 @@ const UserProfile = () => {
                                 <div className="general-info-resume-intro">
                                     <h1 className="username">{User.username}</h1>
                                     <p className="status" title="entry" v-if="user.entry">User Entry</p>
-                                    <Link tag="a" className="btn btn-sm btn-info" >
-                                        Edit
-                                    </Link>
 
                                 </div>
                             </div>
@@ -155,4 +147,4 @@ const UserProfile = () => {
     );
 }
 
-export default UserProfile;
+export default OtherUser;
