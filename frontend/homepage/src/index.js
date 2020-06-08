@@ -7,6 +7,7 @@ import PostDetails from './views/Posts/PostDetails';
 import PostAdd from './views/Posts/AddPost';
 import SeriesList from './views/Series/SeriesList';
 import SeriesDetails from './views/Series/SeriesDetails';
+import CategoryDetails from './views/Category/CategoryDetails';
 import MainNav from './views/MainNav';
 import HomePage from './views/HomePage';
 import MainFooter from './views/MainFooter';
@@ -50,7 +51,9 @@ function App () {
                             <PostAdd />
                         </Route>
                     }
-
+                    <Route path="/category/:slug">
+                        <CategoryDetails />
+                    </Route>
                     <Route exact path="/series/">
                         <SeriesList />
                     </Route>
