@@ -3,7 +3,7 @@ import ReactDOM from 'react-dom';
 import { Link, useParams } from "react-router-dom";
 import '../../index.css';
 import UserService, { UserServiceError } from "../../services/user.service";
-
+import DEFAULT_AVATAR from "../../static/images/default-avatar.png"
 
 const OtherUser = () => {
     let params = useParams();
@@ -33,14 +33,12 @@ const OtherUser = () => {
                             <div className="general-info-resume d-flex flex-xl-column justify-content-start align-items-start">
                                 <div className="general-info-resume-ava">
                                     <div className="thumb">
-                                        { User.avatars.length != 0  && <img src={User.avatars} DEFAULT_AVATAR  alt='avatar'/>}
-                                        { User.avatars.length == 0 && <img src={require('../../static/images/default-avatar.png')} DEFAULT_AVATAR  alt='avatar'/>}
+                                        {User && User.avatars && User.avatars.length !== 0  && <img src={User.avatars[0].full_path}    alt='avatar'/>}
+                                        {User && User.avatars && User.avatars.length == 0 && <img src={DEFAULT_AVATAR}/>}
                                     </div>
                                 </div>
                                 <div className="general-info-resume-intro">
                                     <h1 className="username">{User.username}</h1>
-                                    <p className="status" title="entry" v-if="user.entry">User Entry</p>
-
                                 </div>
                             </div>
                             <div className="general-info-reaction text-center">
@@ -49,7 +47,7 @@ const OtherUser = () => {
                                         Score
                                     </div>
                                     <div className="general-info-reaction-item-content">
-                                        User score
+                                        {User.score}
                                     </div>
                                 </div>
                             </div>
