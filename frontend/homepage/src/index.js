@@ -2,6 +2,7 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import './App.scss';
 import Login from './views/Login/Login';
+import ActivitiesLog from './views/UserProfile/ActivitiesLog';
 import PostList from './views/Posts/PostsList';
 import PostDetails from './views/Posts/PostDetails';
 import PostAdd from './views/Posts/AddPost';
@@ -69,6 +70,10 @@ function App () {
 
                     <Route path="/profile/me">
                         <UserProfile />
+                    </Route>
+
+                    <Route path="/profile/activities">
+                        <ActivitiesLog />
                     </Route>
 
                     {!isLoggedin ? <Redirect to="/posts/" /> :

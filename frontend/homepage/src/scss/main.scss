@@ -217,4 +217,21 @@
         margin-top: 10px;
     }
 }
+.profile-activity{
+    .thumbnail{
+        width: 250px;
+        height: 200px;
+        padding: 0.625rem;
+        .img{
+            width: 100%;
+            background-size: contain;
+            background-repeat: no-repeat;
+            height: 100%;
+        }
+    }
+
+    .des{
+        font-size: .875rem !important;
+    }
+}
 
